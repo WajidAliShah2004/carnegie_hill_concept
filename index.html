@@ -30,12 +30,12 @@
   .card p{margin:0;color:var(--mid);font-size:16px}
   .card .tokens{display:flex;gap:6px;margin-top:14px}
   .card .tokens span{width:22px;height:22px;border:1px solid rgba(0,0,0,.12)}
-  .also{border-top:1px solid var(--line);padding:32px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:32px;color:var(--mid);font-size:16px}
+  .also{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--mid);font-size:16px}
   .also h3{font-size:16px;font-weight:600;color:var(--ink);margin:0 0 8px}
   .also ul{margin:0;padding-left:18px}
   footer{border-top:1px solid var(--line);padding:28px 0 48px;font-size:15px;color:var(--mid);margin-top:48px}
   footer p{margin:0 0 8px}
-  @media (max-width:760px){.grid,.also{grid-template-columns:1fr}}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -89,14 +89,6 @@
 
   <div class="also">
     <div>
-      <h3>What is real and what is not</h3>
-      <ul>
-        <li>Photos, logo, and reviews come from the live nyframing.com.</li>
-        <li>Address, hours, phone, email, and the services list are copied from the current site and marked as needing confirmation.</li>
-        <li>All wording about the shop is taken from the current site. Nothing about the owner, the staff, the process, or turnaround times is stated, because the current site does not state it.</li>
-      </ul>
-    </div>
-    <div>
       <h3>How to review</h3>
       <ul>
         <li>Open each concept on a phone as well as a desktop.</li>
@@ -106,9 +98,6 @@
     </div>
   </div>
 
-  <footer>
-    <p>Prepared from the merged developer master brief and the live site. Full facts pulled from the live site are listed in docs/current-site-facts.md.</p>
-  </footer>
 </main>
 </body>
 </html>
