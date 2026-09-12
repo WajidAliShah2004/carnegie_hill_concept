@@ -1,6 +1,6 @@
 # Where every line of copy comes from
 
-Checked on 12 September 2026 after removing all inferred, assumed, and invented wording from the four concepts.
+Checked on 12 September 2026 after removing all inferred, assumed, and invented wording from the four concepts, and checked again during the redesign that replaced two of the four.
 
 ## Copied from the live site, word for word or lightly shortened
 
@@ -42,3 +42,12 @@ Checked on 12 September 2026 after removing all inferred, assumed, and invented 
 - "A family shop"
 - One line descriptions written for each service
 - Guessed mediums in gallery captions (etching, watercolor, oil)
+- "It holds about 400 going back to 2020" on the gallery pages. The site does not give a
+  start year, and the photos in /assets run back to November 2024, so the claim was both
+  unsourced and wrong. Replaced with "which holds about 400 of them".
+- A caption naming one gallery photo as a record and its sleeve. The site does say one
+  photo shows a record and its sleeve, but which file that is was never established, and
+  the photo the caption sat on is not one. Captions now name only what can be seen in the
+  photo they belong to.
+- A year on a single gallery caption. Years were read from the site's upload folders, but
+  the mapping from folder to individual file was never recorded, so no caption claims one.

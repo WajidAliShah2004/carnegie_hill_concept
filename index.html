@@ -8,96 +8,140 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.png">
 <style>
-  :root{--bg:#FFFFFF;--ink:#1E1D1B;--mid:#66635E;--line:#DEDBD4}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Libre Franklin",system-ui,sans-serif;font-size:17px;line-height:1.55}
+  :root{
+    --page:#FBFBFA; --panel:#F1F1EF; --rule:#DCDCD8; --ink:#1A1A18; --quiet:#5E5E59;
+    --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+    --gut:clamp(20px,4vw,56px);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+  body{
+    margin:0;background:var(--page);color:var(--ink);
+    font-family:"Public Sans",system-ui,-apple-system,sans-serif;
+    font-size:17px;line-height:1.6;font-synthesis-weight:none;
+  }
+  img{display:block;max-width:100%}
+  p{margin:0}
   a{color:inherit}
   :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
-  header{padding:clamp(48px,7vw,96px) 0 clamp(32px,4vw,56px);border-bottom:1px solid var(--line)}
-  h1{font-size:clamp(30px,4.5vw,52px);font-weight:600;letter-spacing:-0.015em;line-height:1.08;margin:0;max-width:18ch}
-  header p{margin:20px 0 0;max-width:62ch;color:var(--mid);font-size:18px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px 32px;padding:48px 0 clamp(48px,7vw,96px)}
+  .skip{position:absolute;left:-9999px;top:8px;background:var(--ink);color:var(--page);padding:10px 14px;z-index:10;text-decoration:none}
+  .skip:focus{left:8px}
+
+  .wrap{max-width:1280px;margin-inline:auto;padding-inline:var(--gut)}
+
+  header{padding-block:clamp(48px,7vw,96px) clamp(32px,4vw,56px);border-bottom:1px solid var(--rule)}
+  .mark{height:38px;width:auto;margin-bottom:var(--s7)}
+  h1{font-size:clamp(29px,3.6vw,46px);font-weight:600;letter-spacing:-.022em;line-height:1.12;margin:0;max-width:20ch;text-wrap:balance}
+  header p{margin-top:var(--s5);max-width:62ch;color:var(--quiet);font-size:18px;text-wrap:pretty}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,5vw,72px) clamp(28px,3.5vw,48px);padding-block:clamp(40px,5vw,72px)}
   .card{display:block;text-decoration:none}
-  .thumb{aspect-ratio:16/10;overflow:hidden;border:1px solid var(--line);background:#F3F1EC}
-  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
-  .card:hover .thumb{border-color:var(--ink)}
-  .card .body{padding:18px 0 0}
-  .card h2{font-size:24px;font-weight:600;margin:0 0 6px;letter-spacing:-0.01em}
-  .card .n{color:var(--mid);font-size:14px;display:block;margin-bottom:10px}
-  .card p{margin:0;color:var(--mid);font-size:16px}
-  .card .tokens{display:flex;gap:6px;margin-top:14px}
-  .card .tokens span{width:22px;height:22px;border:1px solid rgba(0,0,0,.12)}
-  .also{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--mid);font-size:16px}
-  .also h3{font-size:16px;font-weight:600;color:var(--ink);margin:0 0 8px}
-  .also ul{margin:0;padding-left:18px}
-  footer{border-top:1px solid var(--line);padding:28px 0 48px;font-size:15px;color:var(--mid);margin-top:48px}
-  footer p{margin:0 0 8px}
-  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .shot{aspect-ratio:16/10;overflow:hidden;border:1px solid var(--rule);background:var(--panel)}
+  .shot img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .card:hover .shot{border-color:var(--ink)}
+  .body{padding-top:var(--s5)}
+  .n{color:var(--quiet);font-size:14px;display:block;margin-bottom:var(--s2)}
+  .card h2{font-size:23px;font-weight:600;margin:0 0 var(--s3);letter-spacing:-.015em}
+  .card:hover h2{text-decoration:underline;text-underline-offset:3px}
+  .card p{color:var(--quiet);font-size:16px;text-wrap:pretty}
+  .swatches{display:flex;gap:6px;margin-top:var(--s5)}
+  .swatches span{width:26px;height:26px;border:1px solid rgb(0 0 0 / .14)}
+
+  .how{border-top:1px solid var(--rule);padding-block:var(--s7) var(--s9);display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px)}
+  .how h2{font-size:17px;font-weight:600;margin:0 0 var(--s4)}
+  .how ul{margin:0;padding-left:20px;color:var(--quiet);font-size:16px}
+  .how li{margin-bottom:var(--s2)}
+  .how p{color:var(--quiet);font-size:16px;margin-bottom:var(--s4);text-wrap:pretty}
+
+  @media (max-width:820px){
+    .grid,.how{grid-template-columns:1fr}
+    .how{gap:var(--s6)}
+  }
 </style>
 </head>
 <body>
-<main class="wrap">
-  <header>
-    <h1>Four design concepts for nyframing.com</h1>
-    <p>Each concept shows the Home page and a Gallery page. All four use the shop's real photos, the real logo, the reviews already on the current site, and the address, hours, and phone number as the current site lists them. Those details still need the owner's confirmation. Pick one, or tell us which parts of two to combine.</p>
-  </header>
+<a class="skip" href="#concepts">Skip to the concepts</a>
 
+<header>
+  <div class="wrap">
+    <img class="mark" src="assets/logo.png" alt="Carnegie Hill Framing" width="152" height="38">
+    <h1>Four design concepts for nyframing.com</h1>
+    <p>Each concept shows a home page and a gallery page. All four use the shop's real photographs, the real logo, the reviews already on the current site, and the address, hours, and phone number as the current site lists them. Those details still need your confirmation. Pick one, or tell us which parts of two to combine.</p>
+  </div>
+</header>
+
+<main class="wrap" id="concepts">
   <div class="grid">
-    <a class="card" href="familiar-evolution/index.html">
-      <div class="thumb"><img src="thumbs/familiar-evolution.jpg" alt="Familiar evolution concept, home page"></div>
+
+    <a class="card" href="mat-board/index.html">
+      <div class="shot"><img src="thumbs/mat-board.jpg" alt="Mat board concept, home page"></div>
       <div class="body">
         <span class="n">Concept 1</span>
-        <h2>Familiar evolution</h2>
-        <p>The current site, tidied. Same logo, same headline, same wall photo, same page order. Contact details move from the footer to just under the hero, and the reviews are the ones already on the site.</p>
-        <div class="tokens" aria-hidden="true"><span style="background:#FFFFFF"></span><span style="background:#111111"></span><span style="background:#F09030"></span><span style="background:#F5F5F5"></span></div>
+        <h2>Mat board</h2>
+        <p>Quiet and gallery like. Every picture is mounted on a board with a deeper margin at the bottom and its label printed in that margin, which is how a mat is actually cut. Cool grey greens read off the mat board in the shop's own photographs, with one olive gilt hairline.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#E9ECEA"></span><span style="background:#F6F8F7"></span><span style="background:#161922"></span><span style="background:#A18547"></span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="gallery-led/index.html">
-      <div class="thumb"><img src="thumbs/gallery-led.jpg" alt="Gallery-led concept, home page"></div>
+    <a class="card" href="the-hang/index.html">
+      <div class="shot"><img src="thumbs/the-hang.jpg" alt="The hang concept, home page"></div>
       <div class="body">
         <span class="n">Concept 2</span>
-        <h2>Gallery-led</h2>
-        <p>The gallery is the page. A wall of real framed pieces opens the site, the headline sits on a white plate like a wall label, and every photo gets a small museum style caption. Condensed type, black and white, one gilt rule.</p>
-        <div class="tokens" aria-hidden="true"><span style="background:#FAFAF7"></span><span style="background:#151515"></span><span style="background:#B48A2E"></span><span style="background:#EFEEE9"></span></div>
+        <h2>The hang</h2>
+        <p>The shop's frames are black and its mats are white, so the page carries no colour of its own and the work supplies all of it. Pictures sit in rows that share one centre line, the way they are hung on a wall, and the line runs the length of the row behind them.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#13161F"></span><span style="background:#3C3F4A"></span><span style="background:#8E929D"></span><span style="background:#E8EAE9"></span>
+        </div>
       </div>
     </a>
 
     <a class="card" href="heritage-craft/index.html">
-      <div class="thumb"><img src="thumbs/heritage-craft.jpg" alt="Heritage craft concept, home page"></div>
+      <div class="shot"><img src="thumbs/heritage-craft.jpg" alt="Heritage craft concept, home page"></div>
       <div class="body">
         <span class="n">Concept 3</span>
         <h2>Heritage craft</h2>
-        <p>Gilt and black. One ornate gold framed piece hangs on a dark wall beside a Caslon headline. Sections alternate between the dark wall and a linen mat. The quiet, older shop feel.</p>
-        <div class="tokens" aria-hidden="true"><span style="background:#1B1512"></span><span style="background:#C9A035"></span><span style="background:#EFE8DA"></span><span style="background:#221C18"></span></div>
+        <p>The older, quieter shop. Caslon on a dark wall the colour of the shop's own window frames, with the gilt taken off a gilt frame in the gallery, so it is olive rather than bright yellow. The gallery pieces hang on the dark wall.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#23160C"></span><span style="background:#A18547"></span><span style="background:#F0E8E0"></span><span style="background:#E1D7CE"></span>
+        </div>
       </div>
     </a>
 
     <a class="card" href="shop-front/index.html">
-      <div class="thumb"><img src="thumbs/shop-front.jpg" alt="Shop front concept, home page"></div>
+      <div class="shot"><img src="thumbs/shop-front.jpg" alt="Shop front concept, home page"></div>
       <div class="body">
         <span class="n">Concept 4</span>
         <h2>Shop front</h2>
-        <p>Built from the actual storefront: the burgundy awning becomes the masthead, the yellow facade becomes the hero, and hours sit on a black sign strip underneath. Flat colour blocks, thick black rules, no cards or shadows.</p>
-        <div class="tokens" aria-hidden="true"><span style="background:#7B2D3A"></span><span style="background:#D8A428"></span><span style="background:#141414"></span><span style="background:#FFFFFF"></span></div>
+        <p>Built from the storefront. The burgundy awning crowns the page with its scalloped edge, the shop itself runs full width underneath, and the hours sit on a black sign strip below that. The yellow of the facade appears as one band, not as a whole page.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#753644"></span><span style="background:#B38F23"></span><span style="background:#2D1E13"></span><span style="background:#FFFFFF"></span>
+        </div>
       </div>
     </a>
+
   </div>
 
-  <div class="also">
+  <div class="how">
     <div>
-      <h3>How to review</h3>
+      <h2>How to review</h2>
       <ul>
-        <li>Open each concept on a phone as well as a desktop.</li>
-        <li>Every page has a link back here at the top.</li>
-        <li>The Gallery page on each concept has a second tab showing frame samples and the shop.</li>
+        <li>Open each concept on a phone as well as a computer.</li>
+        <li>Every page has a link back to this one at the top.</li>
+        <li>The gallery page on each concept has a second tab showing frame samples and the shop.</li>
       </ul>
     </div>
+    <div>
+      <h2>Where the colours come from</h2>
+      <p>No colour on any of the four was picked by eye. Each one is a colour measured from a pixel in the shop's own photographs: the mat board, the gilt frames, the burgundy awning, the yellow facade, and the black window frames.</p>
+      <p>Every line of writing is either copied from the current site or is a plain description of something visible in one of the photographs. Nothing about the business has been invented, and the notes on each page mark what still needs your confirmation.</p>
+    </div>
   </div>
-
 </main>
+
 </body>
 </html>
