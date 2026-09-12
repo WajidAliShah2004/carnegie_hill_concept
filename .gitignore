@@ -1,0 +1,25 @@
+# Source brief and other documents
+*.docx
+*.doc
+*.pdf
+
+# Tool and session folders
+.claude/
+.playwright-mcp/
+docs/superpowers/
+
+# Screenshots and scratch output
+*.log
+shots/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Dependencies and deploy output
+node_modules/
+.vercel/
