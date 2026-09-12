@@ -1,0 +1,208 @@
+/* Concept 2: The hang
+   The shop's own frames are black and its mats are white, so the page gives up
+   colour entirely and lets the work supply all of it. Every value below is a
+   median pixel from a photo in /assets.
+
+   The device is the hang line. Pictures in a row are different sizes but share
+   one horizontal centre line, which is how pictures are really hung on a wall.
+   The line runs the length of the wall and the pictures interrupt it. */
+
+:root{
+  --ink:#13161F;    /* frame, work-01.jpg */
+  --raise:#22252E;
+  --rule:#3C3F4A;
+  --quiet:#8E929D;
+  --soft:#BEC1C9;
+  --mat:#E8EAE9;    /* mat board, work-17.jpg */
+
+  --face:"Schibsted Grotesk",system-ui,-apple-system,sans-serif;
+
+  --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
+  --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+
+  --w:1360px;
+  --gut:clamp(20px,4vw,64px);
+
+  /* the four sizes a picture can be hung at */
+  --h-s:clamp(132px,17vw,224px);
+  --h-m:clamp(170px,23vw,300px);
+  --h-l:clamp(205px,29vw,376px);
+  --h-xl:clamp(240px,35vw,448px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--mat);
+  font-family:var(--face);
+  font-size:17px;
+  line-height:1.6;
+  font-synthesis-weight:none;
+}
+img{display:block;max-width:100%}
+p{margin:0}
+a{color:inherit}
+
+h1,h2,h3{margin:0;font-weight:500;text-wrap:balance}
+h1{font-size:clamp(28px,3.2vw,44px);line-height:1.1;letter-spacing:-.022em}
+h2{font-size:clamp(22px,2.2vw,30px);line-height:1.18;letter-spacing:-.018em}
+h3{font-size:17px;font-weight:500;line-height:1.4;letter-spacing:-.005em}
+
+.wrap{max-width:var(--w);margin-inline:auto;padding-inline:var(--gut)}
+.lede{font-size:18px;line-height:1.55;color:var(--soft);max-width:36em;text-wrap:pretty}
+.prose{max-width:34em;color:var(--soft);text-wrap:pretty}
+.prose + .prose{margin-top:var(--s4)}
+.quiet{color:var(--quiet)}
+
+.skip{position:absolute;left:-9999px;top:8px;background:var(--mat);color:var(--ink);padding:10px 14px;z-index:100;text-decoration:none}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--mat);outline-offset:3px}
+
+/* ---------- review strip ---------- */
+.draft{background:var(--raise);color:var(--soft);font-size:13.5px;line-height:1.5;padding:9px 0}
+.draft .wrap{display:flex;gap:var(--s5);justify-content:space-between;flex-wrap:wrap}
+
+/* ---------- header ---------- */
+.site{padding-block:var(--s5)}
+.site .wrap{display:flex;align-items:center;gap:var(--s5);justify-content:space-between}
+.brand{line-height:0;flex:none}
+/* This concept carries no colour of its own, so the mark is set solid white
+   rather than inverted, which would turn its orange blue. */
+.brand img{height:38px;width:auto;filter:brightness(0) invert(1)}
+.nav ul{list-style:none;display:flex;gap:var(--s5);margin:0;padding:0}
+.nav a{text-decoration:none;font-size:15px;color:var(--soft);padding-block:4px;border-bottom:1px solid transparent}
+.nav a:hover{color:var(--mat);border-bottom-color:var(--rule)}
+.nav a[aria-current]{color:var(--mat);border-bottom-color:var(--mat)}
+.tel{text-decoration:none;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.menu-btn{display:none;background:none;border:1px solid var(--rule);color:var(--mat);font:inherit;font-size:15px;padding:7px 12px;cursor:pointer}
+
+/* ---------- the hang line, the one device ---------- */
+.hang{overflow-x:auto;overscroll-behavior-x:contain;padding-block:var(--s7);
+      scrollbar-width:thin;scrollbar-color:var(--rule) transparent}
+.hang::-webkit-scrollbar{height:8px}
+.hang::-webkit-scrollbar-thumb{background:var(--rule)}
+.hang::-webkit-scrollbar-track{background:transparent}
+.hang--captioned{padding-bottom:calc(var(--s7) + 40px)}
+.hang__inner{
+  position:relative;
+  display:flex;
+  align-items:center;              /* every picture centres on the same line */
+  gap:clamp(22px,3.6vw,68px);
+  width:max-content;min-width:100%;
+  padding-inline:var(--gut);
+}
+.hang__line{
+  position:absolute;left:0;right:0;top:50%;
+  height:1px;background:var(--rule);
+}
+.hang figure{position:relative;margin:0;flex:0 0 auto}
+.hang img{height:var(--h-m);width:auto;max-width:none}
+.hang .s img{height:var(--h-s)}
+.hang .l img{height:var(--h-l)}
+.hang .xl img{height:var(--h-xl)}
+.hang figcaption{
+  position:absolute;top:calc(100% + 10px);left:0;
+  width:100%;font-size:13px;line-height:1.45;color:var(--quiet);
+}
+
+/* the wall text panel, hung on the same line as the pictures */
+.panel{
+  position:relative;flex:0 0 auto;
+  width:clamp(272px,34vw,448px);
+  background:var(--raise);
+  padding:clamp(24px,2.6vw,36px);
+}
+.panel h1{margin-bottom:var(--s4)}
+.panel p{color:var(--soft);font-size:16.5px;line-height:1.55}
+.panel .act{margin-top:var(--s6)}
+.panel .btn{padding:12px 18px;font-size:15.5px}
+
+.hang-note{margin-top:var(--s4);font-size:13.5px;color:var(--quiet)}
+
+/* ---------- buttons ---------- */
+.act{display:flex;flex-wrap:wrap;gap:var(--s3)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font:inherit;font-size:16px;text-decoration:none;
+  padding:12px 20px;background:var(--mat);color:var(--ink);border:1px solid var(--mat);
+}
+.btn:hover{background:transparent;color:var(--mat)}
+.btn--line{background:transparent;color:var(--mat);border-color:var(--rule)}
+.btn--line:hover{background:var(--mat);color:var(--ink);border-color:var(--mat)}
+
+/* ---------- sections ---------- */
+.sec{padding-block:var(--s9)}
+.sec--tight{padding-block:var(--s8)}
+.sec__head{max-width:40em;margin-bottom:var(--s7)}
+.sec__head p{margin-top:var(--s3);color:var(--quiet);max-width:36em}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,112px);align-items:start}
+
+/* ---------- services ---------- */
+.list{list-style:none;margin:0;padding:0;columns:2;column-gap:clamp(32px,6vw,96px)}
+.list li{break-inside:avoid;padding-block:var(--s4);border-top:1px solid var(--rule);font-size:17px}
+.list li:first-child{border-top:0;padding-top:0}
+.list .det{display:block;color:var(--quiet);font-size:14.5px;margin-top:2px}
+
+/* ---------- reviews ---------- */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,64px)}
+.quotes blockquote{margin:0;border-top:1px solid var(--rule);padding-top:var(--s5)}
+.quotes q{font-size:17px;line-height:1.5;quotes:"\201C" "\201D" "\2018" "\2019"}
+.quotes footer{margin-top:var(--s4);font-size:14px;color:var(--quiet)}
+
+/* ---------- visit, the one inversion ---------- */
+.visit{background:var(--mat);color:var(--ink)}
+.visit .prose,.visit .quiet{color:#4C5058}
+.visit .btn{background:var(--ink);color:var(--mat);border-color:var(--ink)}
+.visit .btn:hover{background:transparent;color:var(--ink)}
+.visit .btn--line{background:transparent;color:var(--ink);border-color:#9AA0A8}
+.visit .btn--line:hover{background:var(--ink);color:var(--mat);border-color:var(--ink)}
+.visit img{width:100%;height:auto}
+.facts{margin:var(--s6) 0 0;display:grid;gap:var(--s3);font-size:16px;line-height:1.5}
+.facts div{display:grid;grid-template-columns:5.5em 1fr;gap:var(--s4)}
+.facts dt{color:#4C5058}
+.facts dd{margin:0;font-variant-numeric:tabular-nums}
+
+/* ---------- footer ---------- */
+.foot{border-top:1px solid var(--rule);padding-block:var(--s8)}
+.foot .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:var(--s7)}
+.foot h3{margin-bottom:var(--s4);font-size:15px}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);font-size:15px}
+.foot a{color:var(--soft);text-underline-offset:3px}
+.foot a:hover{color:var(--mat)}
+.foot .addr{font-size:15px;line-height:1.7;color:var(--soft);font-variant-numeric:tabular-nums}
+.foot .note{margin-top:var(--s5);font-size:13.5px;color:var(--quiet);max-width:40ch;line-height:1.55}
+
+/* ---------- gallery page ---------- */
+.modes{display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s6)}
+.modes button{font:inherit;font-size:15px;padding:10px 18px;cursor:pointer;background:none;border:1px solid var(--rule);color:var(--quiet)}
+.modes button[aria-pressed=true]{background:var(--mat);border-color:var(--mat);color:var(--ink)}
+
+@media (max-width:1040px){
+  .quotes{grid-template-columns:1fr;gap:var(--s6)}
+  .foot .wrap{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  body{font-size:16.5px}
+  .site .wrap{flex-wrap:wrap;row-gap:var(--s4)}
+  .menu-btn{display:block;order:2}
+  .tel{order:3;flex-basis:100%}
+  .nav{order:4;flex-basis:100%;display:none}
+  .nav.open{display:block}
+  .nav ul{flex-direction:column;gap:0;border-top:1px solid var(--rule);margin-top:var(--s4)}
+  .nav li{border-bottom:1px solid var(--rule)}
+  .nav a{display:block;padding:13px 0;border:0}
+  .sec{padding-block:var(--s8)}
+  .two{grid-template-columns:1fr;gap:var(--s6)}
+  .list{columns:1}
+  .foot .wrap{grid-template-columns:1fr;gap:var(--s6)}
+  .facts div{grid-template-columns:1fr;gap:0}
+  .panel{width:min(84vw,420px)}
+}
