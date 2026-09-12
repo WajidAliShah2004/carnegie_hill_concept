@@ -23,7 +23,8 @@ p{margin:0}
 
 header.site{background:var(--mat);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line)}
 header.site .wrap{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:24px;position:relative}
-.brand{text-decoration:none;font-family:var(--narrow);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.brand{display:block;line-height:0}
+.brand img{height:40px;width:auto}
 .brand small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;text-transform:none;letter-spacing:0;color:var(--label);margin-top:3px}
 nav ul{list-style:none;margin:0;padding:0;display:flex;gap:22px}
 nav a{text-decoration:none;font-size:15px;font-weight:500;padding:6px 0;border-bottom:2px solid transparent}
@@ -72,6 +73,8 @@ section{padding:clamp(56px,7vw,110px) 0}
 .services li h3{font-size:22px}
 .services li p{color:var(--label);font-size:15px}
 .note{font-size:13px;color:var(--label);margin-top:14px}
+.frames{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.5vw,32px)}
+.frames img{aspect-ratio:4/3}
 .photo{margin:0;background:#fff;padding:var(--mat-gap)}
 .photo img{width:100%;object-fit:cover}
 .photo .label{border:0;padding:6px 2px 0;margin-top:0}
@@ -117,7 +120,7 @@ footer.site-foot .note{margin-top:14px;max-width:52ch}
 
 @media (max-width:960px){
   .pieces{grid-template-columns:repeat(2,1fr)}
-  .split,.steps,.reviews .list{grid-template-columns:1fr}
+  .split,.steps,.frames,.reviews .list{grid-template-columns:1fr}
   .masonry{column-count:2}
   .mosaic{grid-template-columns:repeat(4,1fr)}
   .wall{display:block}
