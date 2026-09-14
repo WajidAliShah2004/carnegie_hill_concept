@@ -1,6 +1,7 @@
 # Where every line of copy comes from
 
-Checked on 12 September 2026 after removing all inferred, assumed, and invented wording from the four concepts.
+Checked on 12 September 2026 after removing all inferred, assumed, and invented wording from the four concepts, and checked again during the redesign that replaced two of the four.
+Checked a third time on 14 September 2026, when the first four concepts were restored alongside the newer four. Restoring them brought back wording that had been removed, so those removals were applied again to Familiar evolution, Gallery-led, Gilt and linen, and Yellow facade. The lists below hold for all eight concepts.
 
 ## Copied from the live site, word for word or lightly shortened
 
@@ -42,3 +43,28 @@ Checked on 12 September 2026 after removing all inferred, assumed, and invented 
 - "A family shop"
 - One line descriptions written for each service
 - Guessed mediums in gallery captions (etching, watercolor, oil)
+- "It holds about 400 going back to 2020" on the gallery pages. The site does not give a
+  start year, and the photos in /assets run back to November 2024, so the claim was both
+  unsourced and wrong. Replaced with "which holds about 400 of them".
+- A caption naming one gallery photo as a record and its sleeve. The site does say one
+  photo shows a record and its sleeve, but which file that is was never established, and
+  the photo the caption sat on is not one. Captions now name only what can be seen in the
+  photo they belong to.
+- A year on a single gallery caption. Years were read from the site's upload folders, but
+  the mapping from folder to individual file was never recorded, so no caption claims one.
+
+## Re-applied on 14 September 2026 to the restored first four
+
+Familiar evolution, Gallery-led, Gilt and linen, and Yellow facade. The last two are the
+earlier versions of Heritage craft and Shop front, renamed on 14 September 2026 so that
+every concept has a name of its own.
+
+- "It holds about 400 going back to 2020; this page shows a selection from the last year"
+  on all four restored gallery pages. Replaced with "which holds about 400 of them".
+- Years on 27 gallery captions in Gallery-led and one in Gilt and linen. Years
+  were read from the site's upload folders and the folder to file mapping was never
+  recorded, so no caption claims one.
+- A caption naming `work-24.jpg` as a record and its sleeve. The photo was opened and
+  checked: it is a promotional pen in a gilt frame. The caption now reads "Framed pen",
+  which is what the photo shows. The pennant caption on `work-02.jpg` was checked the
+  same way and is correct, so it was left alone.

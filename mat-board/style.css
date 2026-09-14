@@ -1,0 +1,222 @@
+/* Concept 1: Mat board
+   Every colour below is a median pixel sampled from a photo in /assets.
+   Page ground and panels come from the mat board in work-17.jpg, which is a cool
+   grey green, not a cream. Ink is the frame in work-01.jpg. Gilt is the frame in
+   work-24.jpg. The one structural device is the bevel drawn around every image. */
+
+:root{
+  /* colour, sampled */
+  --page:#E9ECEA;      /* the wall the board is laid against */
+  --panel:#F6F8F7;     /* mat board, work-17.jpg: a board is lighter than the wall */
+  --sink:#DEE1DF;
+  --edge:#A9ACAA;
+  --bevel-top:#C4C7C5; /* the cut face of a mat: top in shadow, bottom lit */
+  --bevel-side:#D8DBD9;
+  --bevel-side2:#EDEFEE;
+  --bevel-lit:#FFFFFF;
+  --quiet:#616462;
+  --ink:#161922;       /* frame, work-01.jpg */
+  --gilt:#A18547;      /* gilt frame, work-24.jpg */
+
+  /* type */
+  --display:"Bodoni Moda",Didot,"Times New Roman",serif;
+  --text:"Public Sans",system-ui,-apple-system,sans-serif;
+
+  /* space, 4px base */
+  --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
+  --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+
+  --w:1280px;
+  --gut:clamp(20px,4vw,56px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:var(--text);
+  font-size:17px;
+  line-height:1.65;
+  font-synthesis-weight:none;
+}
+img{display:block;max-width:100%}
+p{margin:0}
+a{color:inherit}
+
+h1,h2{
+  font-family:var(--display);
+  font-weight:400;
+  margin:0;
+  font-optical-sizing:auto;
+  text-wrap:balance;
+}
+h1{font-size:clamp(33px,4.1vw,54px);line-height:1.15;letter-spacing:-.012em}
+h2{font-size:clamp(24px,2.7vw,35px);line-height:1.18;letter-spacing:-.008em}
+h3{font-family:var(--text);font-size:18px;font-weight:600;margin:0;line-height:1.35;letter-spacing:-.005em}
+
+.wrap{max-width:var(--w);margin-inline:auto;padding-inline:var(--gut)}
+.lede{font-size:19px;line-height:1.6;max-width:34em;color:var(--ink);text-wrap:pretty}
+.prose{max-width:36em;text-wrap:pretty}
+.prose + .prose{margin-top:var(--s4)}
+.quiet{color:var(--quiet)}
+.nums{font-variant-numeric:tabular-nums}
+
+.skip{position:absolute;left:-9999px;top:8px;background:var(--ink);color:var(--page);padding:10px 14px;z-index:100;text-decoration:none}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ---------- review strip ---------- */
+.draft{background:var(--sink);font-size:13.5px;line-height:1.5;padding:9px 0}
+.draft .wrap{display:flex;gap:var(--s5);justify-content:space-between;flex-wrap:wrap}
+.draft a{color:var(--ink)}
+
+/* ---------- header ---------- */
+.site{padding-block:var(--s5)}
+.site .wrap{display:flex;align-items:center;gap:var(--s5);justify-content:space-between}
+.brand{line-height:0;flex:none}
+.brand img{height:40px;width:auto}
+.nav ul{list-style:none;display:flex;gap:var(--s5);margin:0;padding:0}
+.nav a{text-decoration:none;font-size:15px;padding-block:4px;border-bottom:1px solid transparent}
+.nav a:hover{border-bottom-color:var(--ink)}
+.nav a[aria-current]{border-bottom-width:2px;border-bottom-color:var(--ink)}
+.tel{text-decoration:none;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.tel:hover{color:var(--gilt)}
+.menu-btn{display:none;background:none;border:1px solid var(--edge);color:inherit;font:inherit;font-size:15px;padding:7px 12px;cursor:pointer}
+
+/* ---------- the mount, the one device ----------
+   A cut mat is bottom weighted: the lower margin is deeper than the other three,
+   so the piece does not look like it is sinking in the board. Every image on this
+   concept is mounted that way, and the label is printed in the deeper margin.
+   The window keeps a real bevel, mitred, because CSS border corners already cut
+   at 45 degrees. */
+.plate{
+  --m:clamp(14px,1.9vw,28px);
+  margin:0;background:var(--panel);
+  padding:var(--m) var(--m) calc(var(--m) * 1.5);
+}
+.plate--deep{--m:clamp(22px,3.4vw,52px)}
+.window{
+  border-style:solid;
+  border-width:clamp(4px,.55vw,7px);
+  border-top-color:var(--bevel-top);
+  border-left-color:var(--bevel-side);
+  border-right-color:var(--bevel-side2);
+  border-bottom-color:var(--bevel-lit);
+  box-shadow:inset 0 0 0 1px rgb(22 25 34 / .3);
+}
+.window img{width:100%;height:auto}
+.plate figcaption{
+  margin-top:calc(var(--m) * 1.15);
+  font-size:14px;line-height:1.5;color:var(--quiet);max-width:42ch;
+}
+.plate figcaption b{display:block;font-weight:600;color:var(--ink);font-size:15px}
+
+/* ---------- buttons ---------- */
+.act{display:flex;flex-wrap:wrap;gap:var(--s3)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font:inherit;font-size:16px;text-decoration:none;
+  padding:13px 22px;background:var(--ink);color:var(--page);
+  border:1px solid var(--ink);
+}
+.btn:hover{background:var(--gilt);border-color:var(--gilt);color:var(--ink)}
+.btn--line{background:none;color:var(--ink)}
+.btn--line:hover{background:var(--ink);color:var(--page);border-color:var(--ink)}
+
+/* ---------- sections ---------- */
+.sec{padding-block:var(--s9)}
+.sec--tight{padding-block:var(--s8)}
+.sec__head{margin-bottom:var(--s7);max-width:38em}
+.sec__head p{margin-top:var(--s3);color:var(--quiet);max-width:34em;text-wrap:pretty}
+
+/* ---------- hero ---------- */
+.hero .wrap{display:grid;grid-template-columns:minmax(0,440px) 1fr;gap:clamp(36px,6vw,104px);align-items:center;padding-block:var(--s6) var(--s7)}
+.hero__text h1{margin-bottom:var(--s5)}
+.hero__text .lede{color:var(--quiet)}
+.hero__text .act{margin-top:var(--s6)}
+.facts{margin:var(--s7) 0 0;display:grid;gap:var(--s3);font-size:15px;line-height:1.5}
+.facts div{display:grid;grid-template-columns:5.5em 1fr;gap:var(--s4)}
+.facts dt{color:var(--quiet)}
+.facts dd{margin:0;font-variant-numeric:tabular-nums}
+.facts a{text-decoration-color:var(--edge);text-underline-offset:3px}
+
+/* ---------- work, an editorial rhythm rather than a uniform grid ---------- */
+.works{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(24px,4vw,64px) clamp(20px,3vw,40px);align-items:end}
+.works .plate:nth-child(1){grid-column:1/6}
+.works .plate:nth-child(2){grid-column:7/13}
+.works .plate:nth-child(3){grid-column:2/7}
+.works .plate:nth-child(4){grid-column:8/13}
+.more{margin-top:var(--s7);font-size:16px}
+.more a{text-underline-offset:4px}
+
+/* ---------- services, set as a catalogue index ---------- */
+.index{list-style:none;margin:0;padding:0;columns:2;column-gap:clamp(32px,6vw,96px)}
+.index li{break-inside:avoid;padding-block:var(--s4);border-top:1px solid var(--edge)}
+.index li:first-child{border-top:0;padding-top:0}
+.index .name{font-family:var(--display);font-size:clamp(19px,1.7vw,23px);line-height:1.25;display:block}
+.index .det{display:block;margin-top:2px;font-size:14.5px;color:var(--quiet)}
+
+/* ---------- split rows ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,88px);align-items:center}
+.split--text-right{grid-template-columns:.9fr 1.1fr}
+
+/* ---------- reviews ---------- */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,64px)}
+.quotes blockquote{margin:0;border-top:1px solid var(--edge);padding-top:var(--s5)}
+.quotes q{font-family:var(--display);font-size:clamp(18px,1.55vw,21px);line-height:1.45;quotes:"\201C" "\201D" "\2018" "\2019"}
+.quotes footer{margin-top:var(--s4);font-size:14px;color:var(--quiet)}
+
+/* ---------- visit ---------- */
+.visit{background:var(--sink)}
+
+/* ---------- footer ---------- */
+.foot{background:var(--ink);color:var(--page);padding-block:var(--s8)}
+.foot .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:var(--s7)}
+.foot a{color:var(--page);text-underline-offset:3px}
+.foot h3{color:var(--page);margin-bottom:var(--s4);font-weight:500;font-size:15px}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);font-size:15px}
+.foot .addr{font-size:15px;line-height:1.7;font-variant-numeric:tabular-nums}
+.foot .note{margin-top:var(--s5);font-size:13.5px;color:#A7ABB4;max-width:40ch;line-height:1.55}
+
+/* ---------- gallery page ---------- */
+.modes{display:flex;gap:var(--s2);margin-bottom:var(--s7);flex-wrap:wrap}
+.modes button{
+  font:inherit;font-size:15px;padding:10px 18px;cursor:pointer;
+  background:none;border:1px solid var(--edge);color:var(--quiet);
+}
+.modes button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--page)}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,48px)}
+.wall .plate{--m:clamp(11px,1.3vw,18px)}
+
+@media (max-width:1040px){
+  .hero .wrap{grid-template-columns:1fr;gap:var(--s7)}
+  .works .plate:nth-child(n){grid-column:auto/span 6}
+  .quotes{grid-template-columns:1fr;gap:var(--s6)}
+  .foot .wrap{grid-template-columns:1fr 1fr}
+  .wall{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  body{font-size:16.5px}
+  .site .wrap{flex-wrap:wrap;row-gap:var(--s4)}
+  .menu-btn{display:block;order:2}
+  .tel{order:3;flex-basis:100%}
+  .nav{order:4;flex-basis:100%;display:none}
+  .nav.open{display:block}
+  .nav ul{flex-direction:column;gap:0;border-top:1px solid var(--edge);margin-top:var(--s4)}
+  .nav li{border-bottom:1px solid var(--edge)}
+  .nav a{display:block;padding:13px 0;border:0}
+  .sec{padding-block:var(--s8)}
+  .works .plate:nth-child(n){grid-column:1/-1}
+  .split,.split--text-right{grid-template-columns:1fr;gap:var(--s6)}
+  .index{columns:1}
+  .foot .wrap{grid-template-columns:1fr;gap:var(--s6)}
+  .wall{grid-template-columns:1fr}
+  .facts div{grid-template-columns:1fr;gap:0}
+}
