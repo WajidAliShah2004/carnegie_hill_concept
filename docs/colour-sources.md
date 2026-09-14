@@ -55,7 +55,9 @@ on purpose. Nothing is indicated by colour alone.
 ## The first four
 
 The first four concepts are still on the site for comparison, under Familiar evolution,
-Gallery-led, and the first versions of Heritage craft and Shop front. Their colours were
+Gallery-led, Gilt and linen, and Yellow facade. The last two are the earlier versions of
+Heritage craft and Shop front, renamed so every concept has a name of its own. Their
+colours were
 picked by eye and are not measured against anything. That is the difference the two
 sections on the chooser page are marking. The measured values above apply only to the
 newer four.
