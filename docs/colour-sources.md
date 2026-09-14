@@ -1,6 +1,7 @@
 # Where every colour comes from
 
-No colour in any of the four concepts was chosen by eye. Each palette is built from
+This file covers the four newer concepts: Mat board, The hang, Heritage craft, and Shop
+front. No colour in those four was chosen by eye. Each palette is built from
 anchor colours measured directly out of the shop's own photographs in `/assets`, then
 extended into a light and dark ramp in OKLCH so the hue and the character of the
 original colour survive at every step.
@@ -50,3 +51,11 @@ off the gilt, which measured 2.96:1 against the page, onto the ink at 14.8:1.
 
 Hairlines that only separate content, and carry no meaning on their own, sit below 3:1
 on purpose. Nothing is indicated by colour alone.
+
+## The first four
+
+The first four concepts are still on the site for comparison, under Familiar evolution,
+Gallery-led, and the first versions of Heritage craft and Shop front. Their colours were
+picked by eye and are not measured against anything. That is the difference the two
+sections on the chooser page are marking. The measured values above apply only to the
+newer four.

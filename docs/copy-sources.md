@@ -51,3 +51,15 @@ Checked on 12 September 2026 after removing all inferred, assumed, and invented 
   photo they belong to.
 - A year on a single gallery caption. Years were read from the site's upload folders, but
   the mapping from folder to individual file was never recorded, so no caption claims one.
+
+## Re-applied on 14 September 2026 to the restored first four
+
+- "It holds about 400 going back to 2020; this page shows a selection from the last year"
+  on all four restored gallery pages. Replaced with "which holds about 400 of them".
+- Years on 27 gallery captions in Gallery-led and one in the first Heritage craft. Years
+  were read from the site's upload folders and the folder to file mapping was never
+  recorded, so no caption claims one.
+- A caption naming `work-24.jpg` as a record and its sleeve. The photo was opened and
+  checked: it is a promotional pen in a gilt frame. The caption now reads "Framed pen",
+  which is what the photo shows. The pennant caption on `work-02.jpg` was checked the
+  same way and is correct, so it was left alone.
