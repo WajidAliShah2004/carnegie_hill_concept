@@ -97,6 +97,7 @@ export const labels = {
     twitter: 'Twitter',
     linkedin: 'LinkedIn',
     youtube: 'YouTube',
+    video: 'Video',
   },
 
   slider: {

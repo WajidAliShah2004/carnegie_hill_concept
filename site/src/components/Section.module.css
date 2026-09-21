@@ -6,6 +6,14 @@
   padding-block: var(--s8);
 }
 
+/*
+  Two sections in a row share one gap. With each bringing its own padding the
+  space between them doubled to 160px, which read as a hole in the page.
+*/
+.sec + .sec {
+  padding-top: 0;
+}
+
 .head {
   max-width: 40em;
   margin-bottom: var(--s7);

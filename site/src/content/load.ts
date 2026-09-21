@@ -200,7 +200,11 @@ export async function getFeaturedReviews(): Promise<Review[]> {
 /* Social posts                                                        */
 /* ------------------------------------------------------------------ */
 
+/** A video file that ships with the site: `/video/name.mp4`, poster beside it. */
+const OWN_VIDEO = /^\/video\/[a-z0-9-]+\.mp4$/
+
 export function platformFromUrl(url: string): SocialPlatform {
+  if (OWN_VIDEO.test(url)) return 'video'
   const host = (() => {
     try {
       return new URL(url).hostname.replace(/^www\./, '').toLowerCase()

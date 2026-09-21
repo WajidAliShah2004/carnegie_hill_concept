@@ -1,7 +1,11 @@
+/*
+  No margin above: the last section of every page already ends with its own
+  padding, and a second gap on top of it left an empty band between two
+  hairlines on a wide screen.
+*/
 .foot {
   border-top: 1px solid var(--rule);
-  padding-block: var(--s8);
-  margin-top: var(--s9);
+  padding-block: var(--s7) var(--s6);
 }
 
 /*
@@ -55,12 +59,20 @@
   letter-spacing: 0;
 }
 
+/*
+  Three rows, filled down then across, so the six pages take two short
+  columns and the footer is as tall as the address rather than as tall as a
+  list of six.
+*/
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: var(--s2);
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  justify-content: start;
+  gap: 0 var(--s7);
   font-size: 15px;
 }
 
@@ -94,7 +106,7 @@
 }
 
 .legal {
-  margin-top: var(--s8);
+  margin-top: var(--s7);
   padding-top: var(--s5);
   border-top: 1px solid var(--rule);
   font-size: 14px;

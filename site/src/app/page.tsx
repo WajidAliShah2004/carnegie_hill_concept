@@ -8,6 +8,8 @@ import {
   getPhotosByType,
   getServices,
 } from '@/content/load'
+import { isLocalImage, type ContentImage } from '@/content/types'
+import { galleryHref, gallerySlug } from '@/content/gallery'
 import { altText, photoView, photoViews, sources } from '@/content/view'
 import { labels } from '@/labels'
 import { ROUTES } from '@/routes'
@@ -25,8 +27,23 @@ import styles from './home.module.css'
 
 export const generateMetadata = routeMetadata('home')
 
+function pixelSize(image: ContentImage): { width: number; height: number } {
+  if (isLocalImage(image)) return { width: image.width, height: image.height }
+  return image.metadata?.dimensions ?? { width: 0, height: 0 }
+}
+
 export default async function HomePage() {
-  const [business, page, sliderPhotos, services, reviews, socialPosts, shopPhotos] = await Promise.all([
+  const [
+    business,
+    page,
+    sliderPhotos,
+    services,
+    reviews,
+    socialPosts,
+    shopPhotos,
+    framePhotos,
+    matPhotos,
+  ] = await Promise.all([
     getBusinessInfo(),
     getPage('homePage'),
     getHomeSliderPhotos(),
@@ -34,14 +51,34 @@ export default async function HomePage() {
     getFeaturedReviews(),
     getFeaturedSocialPosts(),
     getPhotosByType('theShop'),
+    getPhotosByType('frameOptions'),
+    getPhotosByType('matsGlassDisplay'),
   ])
 
   const slider = photoViews(sliderPhotos)
+  // The pictures for What we frame: every photo the owner files under Frame
+  // options or Mats, glass and display, frames first.
+  const options = photoViews([...framePhotos, ...matPhotos])
+  const optionLinks = [
+    { type: 'frameOptions' as const, count: framePhotos.length },
+    { type: 'matsGlassDisplay' as const, count: matPhotos.length },
+  ].filter((link) => link.count > 0)
   const about = page.sections.find((section) => section.key === 'about')
   const visitPhoto = shopPhotos.find((photo) => photo.caption) ?? shopPhotos[0]
   // A second shop photo for the About teaser, so the page never shows the
-  // same picture twice. Nothing renders here when there is only one.
-  const aboutPhoto = shopPhotos.find((photo) => photo.id !== visitPhoto?.id)
+  // same picture twice. Nothing renders here when there is only one. Of the
+  // ones left, the landscape photo with the most pixels: a small or square
+  // file shown half the page wide came out soft and had to be cropped.
+  const aboutPhoto = shopPhotos
+    .filter((photo) => photo.id !== visitPhoto?.id)
+    .map((photo) => ({ photo, ...pixelSize(photo.image) }))
+    .sort((a, b) => Number(b.width > b.height) - Number(a.width > a.height) || b.width - a.width)[0]
+    ?.photo
+  // The first featured video that ships with the site leads the reviews
+  // section at full size, with the featured reviews stacked beside it. Any
+  // other featured post follows in the strip underneath.
+  const leadVideo = socialPosts.find((post) => post.platform === 'video')
+  const stripPosts = socialPosts.filter((post) => post.id !== leadVideo?.id)
   const hasRail = reviews.length > 0 || socialPosts.length > 0
 
   return (
@@ -84,7 +121,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. sliding gallery: starts on the content gutter, runs off the right */}
+      {/* 3. sliding gallery: edge to edge at every width, as in The hang */}
       {slider.length > 0 ? (
         <div className={styles.slider}>
           <HangRow items={slider} label={labels.photoTypes.completedWork} controls>
@@ -102,7 +139,7 @@ export default async function HomePage() {
                 <Picture
                   image={sources(aboutPhoto.image)}
                   alt={altText(aboutPhoto)}
-                  sizes="(max-width: 860px) calc(100vw - 40px), (max-width: 1500px) 40vw, 540px"
+                  sizes="(max-width: 860px) calc(100vw - 40px), (max-width: 1500px) 46vw, 600px"
                 />
               </figure>
             ) : null}
@@ -140,36 +177,81 @@ export default async function HomePage() {
               ))}
             </ul>
           </div>
+          {options.length > 0 ? (
+            <div className={styles.options}>
+              <HangRow items={options} label={labels.photoTypes.frameOptions} controls>
+                <span className={styles.optionLinks}>
+                  {optionLinks.map((link) => (
+                    <Link key={link.type} href={galleryHref(gallerySlug(link.type))}>
+                      {labels.photoTypes[link.type]}
+                    </Link>
+                  ))}
+                </span>
+              </HangRow>
+            </div>
+          ) : null}
         </Section>
       ) : null}
 
       {/* 6. reviews and social */}
       {hasRail ? (
         <Section tight id="reviews">
-          <div className="wrap">
-            <SectionHeading
-              heading={labels.sections.whatCustomersSay}
-              aside={{ href: ROUTES.reviews, label: labels.actions.readAllReviews }}
-            />
-          </div>
+          {leadVideo ? (
+            <div className="wrap reveal">
+              {/*
+                The heading sits beside the video, not a review: a quote set
+                next to a person talking reads as that person's words, and
+                the reviews are by other people. They follow in their own
+                row, each under its own name.
+              */}
+              <div className={styles.voices}>
+                <div className={styles.voicesHead}>
+                  <h2 className={styles.voicesTitle}>{labels.sections.whatCustomersSay}</h2>
+                  <p className={styles.voicesMore}>
+                    <Link href={ROUTES.reviews}>{labels.actions.readAllReviews}</Link>
+                  </p>
+                </div>
+                <SocialPostCard post={leadVideo} />
+              </div>
+              {reviews.length > 0 ? (
+                <div className={styles.voicesRest}>
+                  {reviews.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <div className="wrap">
+              <SectionHeading
+                heading={labels.sections.whatCustomersSay}
+                aside={{ href: ROUTES.reviews, label: labels.actions.readAllReviews }}
+              />
+            </div>
+          )}
           {/*
             Full bleed, padded to the content gutter on both sides, so the
             next card peeks past the right gutter instead of being sliced off
-            at the edge of the screen.
+            at the edge of the screen. With a lead video the reviews are
+            already shown above, so only the remaining posts ride here.
           */}
-          <div
-            className={styles.rail}
-            tabIndex={0}
-            role="group"
-            aria-label={labels.sections.whatCustomersSay}
-          >
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} className={styles.railItem} />
-            ))}
-            {socialPosts.map((post) => (
-              <SocialPostCard key={post.id} post={post} className={styles.railItem} />
-            ))}
-          </div>
+          {(leadVideo ? stripPosts.length : 1) > 0 ? (
+            <div
+              className={`${styles.rail} ${leadVideo ? styles.railAfter : ''}`}
+              tabIndex={0}
+              role="group"
+              aria-label={labels.sections.whatCustomersSay}
+            >
+              {leadVideo
+                ? null
+                : reviews.map((review) => (
+                    <ReviewCard key={review.id} review={review} className={styles.railItem} />
+                  ))}
+              {stripPosts.map((post) => (
+                <SocialPostCard key={post.id} post={post} className={styles.railItem} />
+              ))}
+            </div>
+          ) : null}
         </Section>
       ) : null}
 

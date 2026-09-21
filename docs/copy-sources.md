@@ -68,3 +68,12 @@ every concept has a name of its own.
   checked: it is a promotional pen in a gilt frame. The caption now reads "Framed pen",
   which is what the photo shows. The pennant caption on `work-02.jpg` was checked the
   same way and is correct, so it was left alone.
+
+## Videos copied from the live site on 21 September 2026
+
+Both files were on the nyframing.com home page and were downloaded from its WordPress media library. They were re-encoded to MP4 (H.264, AAC) with ffmpeg and nothing else was changed. They ship in `site/public/video/` and appear as social post entries in `site/content/seed/socialPosts.json`. Neither has a caption, because no sourced wording exists for them.
+
+- `work-slideshow.mp4`, from `wp-content/uploads/2025/06/Slide-sow.mp4`. A slideshow of finished framing work carrying the shop's logo and web address. The agency confirmed the sound is fine to publish.
+- `customer-video.mp4`, from `wp-content/uploads/2020/08/IMG-4321.mov`. A man speaking to the camera inside the shop. The agency identified it as a customer testimonial. His name and his agreement to appear on the new site are still to be confirmed with the client.
+
+This replaces the earlier decision that the site hosts no video. Videos from other places are still pasted links.

@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "_id": "social-01",
+    "_type": "socialPost",
+    "url": "/video/customer-video.mp4",
+    "caption": null,
+    "featured": true,
+    "order": 1
+  },
+  {
+    "_id": "social-02",
+    "_type": "socialPost",
+    "url": "/video/work-slideshow.mp4",
+    "caption": null,
+    "featured": false,
+    "order": 2
+  }
+]

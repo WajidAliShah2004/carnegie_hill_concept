@@ -139,7 +139,7 @@
 }
 
 .aboutText {
-  max-width: 26em;
+  min-width: 0;
 }
 
 .aboutHeading {
@@ -153,8 +153,8 @@
 
 .aboutStatement {
   margin-top: var(--s6);
-  font-size: clamp(21px, 2.4vw, 30px);
-  line-height: 1.32;
+  font-size: clamp(22px, 2.9vw, 40px);
+  line-height: 1.26;
   letter-spacing: -0.016em;
   color: var(--mat);
   text-wrap: pretty;
@@ -185,9 +185,6 @@
   .about {
     grid-template-columns: 1fr;
     gap: var(--s6);
-  }
-  .aboutText {
-    max-width: none;
   }
 }
 
@@ -260,7 +257,83 @@
   }
 }
 
+/*
+  The second hang row, under the list: the frame, mat, glass and display
+  photos the owner files from his phone. Edge to edge like the first.
+*/
+.options {
+  margin-top: var(--s6);
+}
+
+.optionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s5);
+}
+
 /* ---------- 6. reviews and social ---------- */
+
+/*
+  The customer's video leads, at the width a video deserves, with the section
+  heading beside it and centred on it, the way the About sentence sits beside
+  its photograph. No review sits next to the video, because a quote beside a
+  person talking reads as that person's words. The featured reviews follow in
+  an even row. On a phone the heading comes first, then the video, then the
+  reviews.
+*/
+.voices {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: center;
+}
+
+.voicesTitle {
+  font-size: clamp(28px, 3.6vw, 50px);
+  line-height: 1.06;
+  letter-spacing: -0.026em;
+  max-width: 9em;
+  text-wrap: balance;
+}
+
+.voicesMore {
+  margin-top: var(--s5);
+  font-size: 15px;
+}
+
+.voicesMore a {
+  color: var(--soft);
+  text-decoration-color: var(--rule);
+  text-underline-offset: 4px;
+  padding-block: 8px;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+.voicesMore a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.voicesRest {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--s6) clamp(32px, 5vw, 88px);
+  margin-top: var(--s7);
+}
+
+.railAfter {
+  margin-top: var(--s7);
+}
+
+@media (max-width: 860px) {
+  .voices {
+    grid-template-columns: 1fr;
+    gap: var(--s6);
+  }
+  .voicesRest {
+    margin-top: var(--s6);
+  }
+}
 
 /*
   Full bleed with the content gutter as padding on both sides, so the row

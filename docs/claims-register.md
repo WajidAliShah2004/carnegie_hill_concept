@@ -10,7 +10,7 @@ has agreed it is true. A claim that is not approved does not publish.
 change. Approvals already recorded here are carried forward, so filling in the
 "Approved by" and "Date" columns is safe and is the point of the file.
 
-Generated from 69 content document(s). 42 claim(s).
+Generated from 71 content document(s). 42 claim(s).
 
 | Claim | Page | Field | Source | Approved by | Date | Status |
 | --- | --- | --- | --- | --- | --- | --- |

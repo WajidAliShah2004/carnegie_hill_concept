@@ -28,10 +28,6 @@
   flex: 1;
 }
 
-.posts {
-  margin-top: var(--s8);
-}
-
 .outbound {
   margin-top: var(--s8);
   padding-top: var(--s6);

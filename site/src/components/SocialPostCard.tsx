@@ -35,6 +35,26 @@ export function SocialPostCard({ post, className }: SocialPostCardProps) {
   const embed = embedUrl(post)
   const canEmbed = embed !== null && !failed
 
+  // A video that ships with the site. Nothing is fetched but the poster until
+  // the visitor presses play, and there is no post elsewhere to link to.
+  if (post.platform === 'video') {
+    return (
+      <div className={[styles.card, className].filter(Boolean).join(' ')}>
+        <p className={styles.platform}>{labels.platforms.video}</p>
+        {post.caption ? <p className={styles.caption}>{post.caption}</p> : null}
+        <video
+          className={styles.video}
+          src={post.url}
+          poster={post.url.replace(/\.mp4$/, '.jpg')}
+          controls
+          playsInline
+          preload="none"
+          aria-label={post.caption ?? labels.platforms.video}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className={[styles.card, className].filter(Boolean).join(' ')}>
       <p className={styles.platform}>{labels.platforms[post.platform]}</p>

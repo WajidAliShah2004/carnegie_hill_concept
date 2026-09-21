@@ -122,7 +122,14 @@ export type Review = {
   order: number
 }
 
-export type SocialPlatform = 'instagram' | 'facebook' | 'twitter' | 'linkedin' | 'youtube' | 'other'
+export type SocialPlatform =
+  | 'instagram'
+  | 'facebook'
+  | 'twitter'
+  | 'linkedin'
+  | 'youtube'
+  | 'video'
+  | 'other'
 
 export type RawSocialPost = Timestamped &
   Ordered & {

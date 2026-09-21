@@ -12,7 +12,7 @@ export type VisitSectionProps = {
   id?: string
 }
 
-/** The one inverted section on the site. Never side by side below 720px. */
+/** The one inverted section on the site. Never side by side at 900px or below. */
 export function VisitSection({ business, photo, id }: VisitSectionProps) {
   return (
     <section {...(id ? { id } : {})} className={`invert ${styles.visit}`}>

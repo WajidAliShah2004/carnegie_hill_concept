@@ -52,6 +52,15 @@
   border-bottom-color: var(--mat);
 }
 
+.video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--raise);
+  border: 1px solid var(--rule);
+}
+
 .embed {
   border: 1px solid var(--rule);
   width: 100%;

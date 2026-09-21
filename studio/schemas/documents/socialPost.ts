@@ -14,10 +14,11 @@ export const socialPost = defineType({
       name: 'url',
       title: 'Link to the post',
       type: 'url',
-      description: 'Paste the link to one post on Instagram, Facebook, YouTube, Twitter, or LinkedIn.',
+      description:
+        'Paste the link to one post on Instagram, Facebook, YouTube, Twitter, or LinkedIn. A video that ships with the site is entered by the agency as /video/name.mp4.',
       validation: (Rule) =>
         Rule.required()
-          .uri({scheme: ['http', 'https']})
+          .uri({scheme: ['http', 'https'], allowRelative: true})
           .error('Paste the link to the post.'),
     }),
     defineField({

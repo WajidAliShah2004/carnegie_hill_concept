@@ -14,6 +14,7 @@ export const SOCIAL_PLATFORMS = [
   {value: 'twitter', title: 'Twitter'},
   {value: 'linkedin', title: 'LinkedIn'},
   {value: 'youtube', title: 'YouTube'},
+  {value: 'video', title: 'Video on this site'},
   {value: 'other', title: 'Somewhere else'},
 ] as const
 
@@ -21,6 +22,8 @@ export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number]['value']
 
 export function platformFromUrl(url: string | undefined): SocialPlatform | undefined {
   if (!url) return undefined
+  // A video file that ships with the site: `/video/name.mp4`.
+  if (/^\/video\/[a-z0-9-]+\.mp4$/.test(url)) return 'video'
   let host: string
   try {
     host = new URL(url).hostname.toLowerCase().replace(/^www\./, '')

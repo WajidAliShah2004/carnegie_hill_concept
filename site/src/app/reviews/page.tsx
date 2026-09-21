@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { getBusinessInfo, getPage, getReviews, getSocialPosts } from '@/content/load'
 import { labels } from '@/labels'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
@@ -21,6 +22,23 @@ export default async function Page() {
   ])
   const heading = doc.h1 ?? labels.pageHeading.reviewsPage
 
+  // One grid, not two: a post or video follows every second review, so they
+  // sit alongside the reviews the way the client asked. Each list keeps its
+  // own order, and whatever is left over when one runs out follows on.
+  const cards: { key: string; node: ReactNode }[] = []
+  let nextPost = 0
+  reviews.forEach((review, index) => {
+    cards.push({ key: review.id, node: <ReviewCard review={review} /> })
+    const post = index % 2 === 1 ? posts[nextPost] : undefined
+    if (post) {
+      cards.push({ key: post.id, node: <SocialPostCard post={post} /> })
+      nextPost += 1
+    }
+  })
+  for (const post of posts.slice(nextPost)) {
+    cards.push({ key: post.id, node: <SocialPostCard post={post} /> })
+  }
+
   return (
     <main id="main">
       <PageJsonLd route="reviews" />
@@ -32,21 +50,11 @@ export default async function Page() {
             {doc.intro ? <p className={`lede ${styles.intro}`}>{doc.intro}</p> : null}
           </div>
 
-          {reviews.length > 0 ? (
+          {cards.length > 0 ? (
             <ul className={styles.grid}>
-              {reviews.map((review) => (
-                <li key={review.id} className={styles.cell}>
-                  <ReviewCard review={review} />
-                </li>
-              ))}
-            </ul>
-          ) : null}
-
-          {posts.length > 0 ? (
-            <ul className={`${styles.grid} ${styles.posts}`}>
-              {posts.map((post) => (
-                <li key={post.id} className={styles.cell}>
-                  <SocialPostCard post={post} />
+              {cards.map((card) => (
+                <li key={card.key} className={styles.cell}>
+                  {card.node}
                 </li>
               ))}
             </ul>

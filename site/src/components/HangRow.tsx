@@ -103,7 +103,11 @@ export function HangRow({
     <div className={styles.row}>
       <div
         ref={scroller}
-        className={[styles.scroller, captioned ? styles.captioned : null]
+        className={[
+          styles.scroller,
+          captioned ? styles.captioned : null,
+          controls ? styles.controlled : null,
+        ]
           .filter(Boolean)
           .join(" ")}
         tabIndex={0}

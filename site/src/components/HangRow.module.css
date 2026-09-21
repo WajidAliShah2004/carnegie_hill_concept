@@ -29,15 +29,29 @@
   background: transparent;
 }
 
+/*
+  A row with previous and next buttons hides the scrollbar. The bar of
+  buttons is pulled up under the pictures, and the scrollbar was being drawn
+  straight across the gallery link inside it. Swipe, trackpad, arrow keys and
+  the buttons all still move the row.
+*/
+.controlled {
+  scrollbar-width: none;
+}
+
+.controlled::-webkit-scrollbar {
+  display: none;
+}
+
 .captioned {
   padding-bottom: calc(var(--s7) + 40px);
 }
 
 /*
-  The row starts on the same line as every heading on the page and runs off
-  the right of the screen, which is what says "this continues". Before, it
-  began at the viewport gutter, a little to the left of everything else, and
-  read as a mistake rather than a device.
+  Edge to edge at every width, as in The hang: the row starts one gutter in
+  from the left of the screen and runs off the right, so it keeps widening
+  with the window after the content column has stopped. The client named this
+  behaviour when choosing the concept.
 */
 .inner {
   position: relative;
@@ -46,8 +60,7 @@
   gap: clamp(22px, 3.6vw, 68px);
   width: max-content;
   min-width: 100%;
-  padding-left: var(--rail);
-  padding-right: var(--gut);
+  padding-inline: var(--gut);
 }
 
 .line {
@@ -104,9 +117,10 @@
 /* ---------- previous and next ---------- */
 
 /*
-  The bar belongs to the row: it starts on the same line as the first picture,
-  runs to the right gutter, and hangs from its own hairline, so it reads as
-  the foot of the row rather than as two buttons left on the page.
+  The bar stays on the content column while the pictures run edge to edge, so
+  the gallery link sits under the headings and the buttons never drift out to
+  the corners of a very wide screen. It hangs from its own hairline, so it
+  reads as the foot of the row rather than as two buttons left on the page.
 */
 .controls {
   display: flex;
