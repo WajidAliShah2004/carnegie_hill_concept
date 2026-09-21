@@ -1,0 +1,21 @@
+{
+  "_id": "servicesPage",
+  "_type": "servicesPage",
+  "h1": {
+    "text": "Services",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com page names, read 12 September 2026, recorded in docs/current-site-facts.md"
+    }
+  },
+  "intro": null,
+  "metaTitle": {
+    "text": "Services | Carnegie Hill Gallery & Custom Framing",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com business name and page names, read 12 September 2026"
+    }
+  },
+  "metaDescription": null,
+  "sections": []
+}

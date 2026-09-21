@@ -1,0 +1,200 @@
+/*
+  Twelve services, most of them a name and nothing else. The page is set like
+  an index: the title and the jump list hold the left column and stay put,
+  the services run down the right against one hairline each.
+*/
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 20em) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 104px);
+  align-items: start;
+}
+
+.rail {
+  position: sticky;
+  top: var(--s5);
+}
+
+.intro {
+  margin-top: var(--s5);
+}
+
+.index {
+  margin-top: var(--s7);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+}
+
+.indexHeading {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--quiet);
+  letter-spacing: 0;
+}
+
+.indexList {
+  list-style: none;
+  margin: var(--s3) 0 0;
+  padding: 0;
+  font-size: 15px;
+  columns: 1;
+}
+
+.indexList li {
+  break-inside: avoid;
+}
+
+.indexList a {
+  display: block;
+  padding-block: 7px;
+  color: var(--soft);
+  text-decoration-color: var(--rule);
+  text-underline-offset: 4px;
+}
+
+.indexList a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.railButton {
+  margin-top: var(--s6);
+}
+
+/*
+  The left column is sticky and short, so the page used to end with a large
+  empty rectangle beside the last services. The phone number and the opening
+  hours belong on a page somebody reads before calling, so they fill it with
+  something worth having.
+*/
+.railFacts {
+  display: block;
+  margin-top: var(--s7);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+  font-size: 15px;
+}
+
+/* ---------- the services themselves ---------- */
+
+.list {
+  display: block;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--s4) var(--s5);
+  border-top: 1px solid var(--rule);
+  padding-block: var(--s6);
+  /* clear of the sticky header */
+  scroll-margin-top: var(--s10);
+  transition: border-color 140ms ease;
+}
+
+.item:hover,
+.item:focus-within {
+  border-top-color: var(--ink-rule);
+}
+
+.item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.itemHeading {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: clamp(20px, 2vw, 26px);
+}
+
+.itemLinks {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--s2) var(--s5);
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+
+.itemLinks a {
+  color: var(--quiet);
+  text-decoration-color: var(--rule);
+  text-underline-offset: 4px;
+  padding-block: 6px;
+}
+
+.itemLinks a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+/*
+  The same words on twelve rows read as machinery. On a device with a real
+  pointer the contact link belongs to the row you are on, so it fades in with
+  it. Touch and keyboard, where there is no hover to give it back, keep it
+  visible: the rule below is inside a hover query and a focus-within escape.
+*/
+@media (hover: hover) and (pointer: fine) and (min-width: 561px) {
+  .itemContact {
+    opacity: 0;
+    transition: opacity 160ms ease, color 140ms ease;
+  }
+
+  .item:hover .itemContact,
+  .item:focus-within .itemContact,
+  .itemContact:focus-visible {
+    opacity: 1;
+  }
+}
+
+.itemBody {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.itemFigure {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.itemFigure img {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--s7);
+  }
+  .rail {
+    position: static;
+  }
+  .indexList {
+    columns: 2;
+    column-gap: var(--s6);
+  }
+}
+
+@media (max-width: 560px) {
+  .item {
+    grid-template-columns: 1fr;
+  }
+  .itemLinks {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+    margin-top: var(--s2);
+  }
+  .itemBody {
+    grid-row: auto;
+  }
+  .indexList {
+    columns: 1;
+  }
+}

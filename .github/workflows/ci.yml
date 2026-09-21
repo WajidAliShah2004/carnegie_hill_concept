@@ -1,0 +1,111 @@
+name: CI
+
+# Every gate in spec section 11, on every push and every pull request.
+# Nothing here deploys. Nothing here talks to a paid service.
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: site
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    name: Build and check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      # No Sanity project exists yet, so CI builds from content/seed. Setting
+      # SANITY_PROJECT_ID as a repository variable switches every gate over.
+      SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+      SANITY_DATASET: ${{ vars.SANITY_DATASET }}
+      SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://nyframing.com' }}
+      NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_KEY }}
+      NEXT_PUBLIC_HCAPTCHA_SITEKEY: ${{ vars.NEXT_PUBLIC_HCAPTCHA_SITEKEY }}
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Install the Chromium build Playwright expects
+        run: npx playwright install --with-deps chromium
+
+      # ---- 1. Type check and lint -------------------------------------
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      # ---- 2. Source check --------------------------------------------
+      # Runs before the build so an unsourced statement fails in seconds.
+      - name: Every statement has a source
+        run: npm run check:sources
+
+      - name: The claims register matches the content
+        run: npm run claims:check
+
+      # ---- Build ------------------------------------------------------
+      - name: Build
+        run: npm run build
+
+      - name: Report the JavaScript weight
+        run: npm run js-weight
+
+      # ---- 3. Visible-string check ------------------------------------
+      - name: Every word traces to content or labels
+        run: npm run check:strings
+
+      # ---- 4. JSON-LD -------------------------------------------------
+      - name: Structured data says nothing the page does not
+        run: npm run check:jsonld
+
+      # ---- 5, 6, 7. Playwright, axe, links, sitemap, redirects --------
+      - name: Playwright
+        run: npm run test:e2e
+
+      # ---- 8. Lighthouse ----------------------------------------------
+      - name: Lighthouse CI
+        run: npm run lh
+
+      - name: Keep the Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: |
+            site/playwright-report
+            site/test-results
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Keep the Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ github.run_id }}
+          path: site/.lighthouseci
+          retention-days: 7
+          if-no-files-found: ignore

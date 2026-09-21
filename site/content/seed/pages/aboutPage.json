@@ -1,0 +1,27 @@
+{
+  "_id": "aboutPage",
+  "_type": "aboutPage",
+  "h1": {
+    "text": "About",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com page names, read 12 September 2026, recorded in docs/current-site-facts.md"
+    }
+  },
+  "intro": null,
+  "metaTitle": {
+    "text": "About | Carnegie Hill Gallery & Custom Framing",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com business name and page names, read 12 September 2026"
+    }
+  },
+  "metaDescription": {
+    "text": "We are able to match you up with the perfect frame. We are fast, professional, and provide you with affordable rates.",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com home page, read 12 September 2026, recorded in docs/copy-sources.md"
+    }
+  },
+  "sections": []
+}

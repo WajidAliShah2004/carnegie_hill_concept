@@ -1,0 +1,88 @@
+import {defineField, defineType} from 'sanity'
+import {ImageIcon} from '@sanity/icons/Image'
+import {orderRankField} from '@sanity/orderable-document-list'
+import {PHOTO_TYPES, PHOTO_TYPE_TITLES} from '../photoTypes'
+import {OwnerCaptionInput} from '../../components/OwnerCaptionInput'
+import {PhotoTypeInput} from '../../components/PhotoTypeInput'
+import {defineSourced} from '../objects/sourced'
+
+/**
+ * The caption on a photo. Same shape as every other sourced field, but the
+ * source is filled in by the Studio so the owner only ever sees the text box.
+ */
+export const ownerCaption = defineSourced({
+  name: 'ownerCaption',
+  title: 'Caption',
+  multiline: true,
+  fixedKind: 'ownerWritten',
+  input: OwnerCaptionInput,
+  sourceOptional: true,
+  textDescription:
+    'Only if you want one. Say what is in the picture in your own words. This is also read out to people who cannot see the photo.',
+})
+
+export const photo = defineType({
+  name: 'photo',
+  title: 'Photos',
+  type: 'document',
+  icon: ImageIcon,
+  fields: [
+    defineField({
+      name: 'image',
+      title: 'Photo',
+      type: 'image',
+      description: 'Take a photo or choose one from your phone.',
+      options: {hotspot: true, accept: 'image/*', storeOriginalFilename: true},
+      validation: (Rule) => Rule.required().error('Add a photo.'),
+    }),
+    defineField({
+      name: 'type',
+      title: 'What kind of photo is this?',
+      type: 'string',
+      description: 'Tap one.',
+      options: {list: PHOTO_TYPES.map((t) => ({value: t.value, title: t.title})), layout: 'radio'},
+      components: {input: PhotoTypeInput},
+      validation: (Rule) => Rule.required().error('Tap one of the four buttons.'),
+    }),
+    defineField({
+      name: 'caption',
+      title: 'Caption',
+      type: 'ownerCaption',
+    }),
+    defineField({
+      name: 'onHomeSlider',
+      title: 'Show on the front page slider',
+      type: 'boolean',
+      description: 'Leave this off unless you want it on the front page.',
+      initialValue: false,
+    }),
+    orderRankField({type: 'photo', newItemPosition: 'before'}),
+  ],
+  preview: {
+    select: {
+      media: 'image',
+      type: 'type',
+      caption: 'caption.text',
+      onHomeSlider: 'onHomeSlider',
+    },
+    prepare({
+      media,
+      type,
+      caption,
+      onHomeSlider,
+    }: {
+      media?: unknown
+      type?: string
+      caption?: string
+      onHomeSlider?: boolean
+    }) {
+      const typeTitle = type ? PHOTO_TYPE_TITLES[type] || type : 'No type yet'
+      const slider = onHomeSlider ? 'On the front page slider' : 'Not on the slider'
+      return {
+        title: caption || typeTitle,
+        subtitle: caption ? `${typeTitle}. ${slider}.` : slider,
+        media: media as never,
+      }
+    },
+  },
+})

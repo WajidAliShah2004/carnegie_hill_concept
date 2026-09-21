@@ -1,0 +1,51 @@
+.head {
+  max-width: 34em;
+  margin-bottom: var(--s8);
+}
+
+.head .intro {
+  margin-top: var(--s5);
+}
+
+/*
+  The quotes are short and uneven. A three column set with each one hanging
+  from its own hairline keeps the page from reading as a wall of cards.
+*/
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s7) clamp(32px, 5vw, 88px);
+}
+
+.cell {
+  display: flex;
+}
+
+.cell > * {
+  flex: 1;
+}
+
+.outbound {
+  margin-top: var(--s8);
+  padding-top: var(--s6);
+  border-top: 1px solid var(--rule);
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--s6);
+  }
+  .head {
+    margin-bottom: var(--s7);
+  }
+}

@@ -1,0 +1,63 @@
+.sec {
+  padding-block: var(--s9);
+}
+
+.tight {
+  padding-block: var(--s8);
+}
+
+/*
+  Two sections in a row share one gap. With each bringing its own padding the
+  space between them doubled to 160px, which read as a hole in the page.
+*/
+.sec + .sec {
+  padding-top: 0;
+}
+
+.head {
+  max-width: 40em;
+  margin-bottom: var(--s7);
+}
+
+.headRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s5);
+  max-width: none;
+  flex-wrap: wrap;
+}
+
+.head p {
+  margin-top: var(--s3);
+  color: var(--quiet);
+  max-width: 36em;
+}
+
+.aside {
+  font-size: 15px;
+  color: var(--soft);
+  text-underline-offset: 4px;
+  text-decoration-color: var(--rule);
+  white-space: nowrap;
+  padding-block: 8px;
+}
+
+.aside:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+:global(.invert) .head p,
+:global(.invert) .aside {
+  color: var(--ink-quiet);
+}
+
+@media (max-width: 760px) {
+  .sec {
+    padding-block: var(--s8);
+  }
+  .head {
+    margin-bottom: var(--s6);
+  }
+}

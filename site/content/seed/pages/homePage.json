@@ -1,0 +1,47 @@
+{
+  "_id": "homePage",
+  "_type": "homePage",
+  "h1": {
+    "text": "Museum Quality Framing Since 2007",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com home page headline, read 12 September 2026, recorded in docs/copy-sources.md"
+    }
+  },
+  "intro": {
+    "text": "Carnegie Hill Gallery & Custom Framing is the place to go when you need your pictures matted or framed, or you are looking for a new, unique piece of artwork.",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com home page, read 12 September 2026, recorded in docs/copy-sources.md"
+    }
+  },
+  "metaTitle": {
+    "text": "Museum Quality Framing Since 2007 | Carnegie Hill Gallery & Custom Framing",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com business name and page names, read 12 September 2026"
+    }
+  },
+  "metaDescription": {
+    "text": "Carnegie Hill Gallery & Custom Framing is the place to go when you need your pictures matted or framed, or you are looking for a new, unique piece of artwork.",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com home page, read 12 September 2026, recorded in docs/copy-sources.md"
+    }
+  },
+  "sections": [
+    {
+      "key": "about",
+      "heading": null,
+      "paragraphs": [
+        {
+          "text": "We are able to match you up with the perfect frame. We are fast, professional, and provide you with affordable rates.",
+          "source": {
+            "kind": "liveSite",
+            "detail": "nyframing.com home page, read 12 September 2026, recorded in docs/copy-sources.md"
+          }
+        }
+      ]
+    }
+  ]
+}

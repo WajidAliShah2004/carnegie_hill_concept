@@ -1,0 +1,196 @@
+name: Deploy
+
+# The owner taps Publish in the Studio. Sanity fires a webhook at GitHub's
+# repository_dispatch. This workflow builds, runs every gate, and deploys.
+# Target is within 3 minutes of the tap.
+#
+# Ten quick uploads make one build: the concurrency group below cancels a run
+# that is still going when the next publish arrives.
+
+on:
+  repository_dispatch:
+    types: [sanity-publish]
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Which site to write over
+        type: choice
+        options: [staging, production]
+        default: staging
+      dry_run:
+        description: Print what would happen and upload nothing
+        type: boolean
+        default: false
+
+# One build at a time per environment. A publish that arrives mid-build
+# cancels it and starts again with the newer content, which is what the owner
+# expects when he adds four photos in a row.
+concurrency:
+  group: deploy-${{ github.event.inputs.environment || (github.ref == 'refs/heads/master' && 'production' || 'staging') }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: site
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  deploy:
+    name: Gate and deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    env:
+      DEPLOY_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/master' && 'production' || 'staging') }}
+      DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://nyframing.com' }}
+      SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+      SANITY_DATASET: ${{ vars.SANITY_DATASET }}
+      SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
+      NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_KEY }}
+      NEXT_PUBLIC_HCAPTCHA_SITEKEY: ${{ vars.NEXT_PUBLIC_HCAPTCHA_SITEKEY }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Say what triggered this
+        run: |
+          echo "trigger: ${{ github.event_name }}"
+          echo "environment: $DEPLOY_ENV"
+          echo "target: ${DEPLOY_TARGET:-unset}"
+          echo "document: ${{ github.event.client_payload.documentType }} ${{ github.event.client_payload.documentId }}"
+
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Install the Chromium build Playwright expects
+        run: npx playwright install --with-deps chromium
+
+      # ---- Every gate blocks the deploy -------------------------------
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Every statement has a source
+        run: npm run check:sources
+
+      - name: Build
+        run: npm run build
+
+      - name: Report the JavaScript weight
+        run: npm run js-weight
+
+      - name: Every word traces to content or labels
+        run: npm run check:strings
+
+      - name: Structured data says nothing the page does not
+        run: npm run check:jsonld
+
+      - name: Playwright, axe, links, sitemap, redirects
+        run: npm run test:e2e
+
+      - name: Lighthouse CI
+        run: npm run lh
+
+      # ---- Keep the previous build, for rollback ----------------------
+      # Hostinger has no deployment history of its own, so the artifact from
+      # the last successful production deploy is the rollback.
+      - name: Fetch the sitemap from the previous deploy
+        id: previous
+        continue-on-error: true
+        run: |
+          mkdir -p ../previous
+          RUN_ID=$(gh run list \
+            --workflow=deploy.yml \
+            --branch=${{ github.ref_name }} \
+            --status=success \
+            --limit=1 \
+            --json databaseId \
+            --jq '.[0].databaseId')
+          if [ -n "$RUN_ID" ]; then
+            gh run download "$RUN_ID" --name "out-$DEPLOY_ENV" --dir ../previous || true
+          fi
+          if [ -f ../previous/sitemap.xml ]; then
+            echo "sitemap=$(cd .. && pwd)/previous/sitemap.xml" >> "$GITHUB_OUTPUT"
+            echo "Previous sitemap found."
+          else
+            echo "No previous sitemap. IndexNow will submit every URL."
+          fi
+
+      # ---- Deploy -----------------------------------------------------
+      - name: Deploy (dry run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: npm run deploy:dry
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          HOSTINGER_PATH: ${{ secrets.HOSTINGER_PATH }}
+
+      - name: Load the deploy key
+        if: ${{ github.event.inputs.dry_run != 'true' && vars.DEPLOY_TARGET == 'hostinger' }}
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.HOSTINGER_SSH_KEY }}
+
+      - name: Deploy
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          HOSTINGER_PATH: ${{ secrets.HOSTINGER_PATH }}
+
+      - name: Keep this build for the next rollback
+        if: ${{ success() && github.event.inputs.dry_run != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: out-${{ env.DEPLOY_ENV }}
+          path: site/out
+          retention-days: 30
+          include-hidden-files: true
+
+      # ---- IndexNow, last ---------------------------------------------
+      # It skips itself on staging and when the key is unset, and a failure
+      # here never fails the deploy: the site is already live and correct.
+      - name: Tell IndexNow what changed
+        if: ${{ success() && github.event.inputs.dry_run != 'true' }}
+        run: npm run indexnow
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          PREVIOUS_SITEMAP: ${{ steps.previous.outputs.sitemap }}
+
+      - name: Keep the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ github.run_id }}
+          path: |
+            site/playwright-report
+            site/test-results
+            site/.lighthouseci
+          retention-days: 7
+          if-no-files-found: ignore

@@ -1,0 +1,71 @@
+/*
+  Concept 5's stacked arrangement in The hang's skin: a fine rule, the
+  heading, the appointment note, the facts, then the buttons, each step
+  sitting under the last. The photograph keeps the column beside it above
+  720px and drops below the text under it.
+*/
+
+.visit {
+  padding-block: var(--s9);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+
+.rule {
+  width: 72px;
+  height: 1px;
+  background: var(--ink);
+  margin-bottom: var(--s5);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--measure);
+}
+
+.note {
+  margin-top: var(--s4);
+  color: var(--ink-quiet);
+  max-width: 34em;
+  text-wrap: pretty;
+}
+
+.factsBlock {
+  margin-top: var(--s6);
+}
+
+.buttons {
+  margin-top: var(--s7);
+}
+
+.figure {
+  margin: 0;
+}
+
+.figure img {
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  margin-top: var(--s3);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-quiet);
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: var(--s7);
+  }
+  .visit {
+    padding-block: var(--s8);
+  }
+}

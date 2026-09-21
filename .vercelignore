@@ -1,0 +1,9 @@
+# The Vercel project serves the design concepts from the repo root.
+# The production build is not hosted here: Vercel Hobby does not permit
+# commercial use. Keeping these folders out means a push to master leaves
+# the concepts deployment exactly as it was, and none of the production
+# source, seed content or video files are published on the concepts URL.
+site
+studio
+.github
+CLAUDE.md

@@ -1,0 +1,51 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 104px);
+  align-items: start;
+}
+
+.details {
+  max-width: 30em;
+}
+
+.intro {
+  margin-top: var(--s5);
+}
+
+.facts {
+  display: block;
+  margin-top: var(--s7);
+  padding-top: var(--s6);
+  border-top: 1px solid var(--rule);
+}
+
+.note {
+  margin-top: var(--s5);
+  color: var(--quiet);
+  font-size: 15px;
+}
+
+.buttons {
+  margin-top: var(--s6);
+}
+
+.formSide {
+  padding-top: var(--s2);
+}
+
+.formHeading {
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s6);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--s8);
+  }
+  .details {
+    max-width: none;
+  }
+}

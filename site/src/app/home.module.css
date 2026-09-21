@@ -1,0 +1,382 @@
+/* ---------- 2. split hero ---------- */
+
+/*
+  Three bands, not two columns. The headline sits alone across the top left,
+  then one hairline crosses the whole page, then the contact details and the
+  storefront hang from that line side by side. `align-self: end` puts the foot
+  of the photograph on the same line as the foot of the buttons, so the two
+  columns close together rather than drifting.
+
+  storefront.jpg is 1000 by 374, the only size the live site has, so the wide
+  thin proportion is the picture's own. Given the width of this column it
+  reads as a shop front seen across the street rather than a bad crop.
+*/
+
+.hero {
+  padding-top: var(--s7);
+  padding-bottom: var(--s7);
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  column-gap: clamp(32px, 5vw, 88px);
+  row-gap: 0;
+}
+
+.heroLead {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.heroTitle {
+  font-size: clamp(30px, 4.4vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  max-width: 19ch;
+}
+
+.heroIntro {
+  margin-top: var(--s5);
+  max-width: 33em;
+}
+
+.heroRule {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  height: 1px;
+  background: var(--rule);
+  margin-top: var(--s7);
+}
+
+/*
+  The column stretches to the height of the photograph beside it and the
+  buttons are pushed to its foot, so the two columns close on the same line
+  instead of one of them trailing off.
+*/
+.heroContact {
+  grid-column: 1;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--s6);
+  max-width: 30em;
+}
+
+.heroButtons {
+  margin-top: auto;
+  padding-top: var(--s6);
+}
+
+.heroFigure {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: end;
+  margin: 0;
+  padding-top: var(--s6);
+}
+
+.heroFigure img {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: var(--s6);
+    padding-bottom: var(--s6);
+  }
+  .heroInner {
+    grid-template-columns: 1fr;
+  }
+  .heroTitle {
+    max-width: none;
+  }
+  .heroContact,
+  .heroFigure {
+    grid-column: 1;
+  }
+  .heroContact {
+    grid-row: 3;
+    max-width: none;
+  }
+  .heroFigure {
+    grid-row: 4;
+    padding-top: var(--s7);
+  }
+  .heroRule {
+    margin-top: var(--s6);
+  }
+}
+
+/* ---------- 3. sliding gallery ---------- */
+
+.slider {
+  padding-top: var(--s4);
+}
+
+/* ---------- 4. about teaser ---------- */
+
+/*
+  One sourced sentence, set at the size it deserves, with one photograph of
+  the shop beside it. The sentence is the whole point of the section, so it is
+  not treated as body copy.
+*/
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: center;
+}
+
+.aboutFigure {
+  margin: 0;
+}
+
+.aboutFigure img {
+  width: 100%;
+  height: auto;
+}
+
+.aboutText {
+  min-width: 0;
+}
+
+.aboutHeading {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--quiet);
+  letter-spacing: 0;
+  padding-bottom: var(--s4);
+  border-bottom: 1px solid var(--rule);
+}
+
+.aboutStatement {
+  margin-top: var(--s6);
+  font-size: clamp(22px, 2.9vw, 40px);
+  line-height: 1.26;
+  letter-spacing: -0.016em;
+  color: var(--mat);
+  text-wrap: pretty;
+}
+
+.aboutStatement + .prose {
+  margin-top: var(--s4);
+}
+
+.aboutMore {
+  margin-top: var(--s6);
+  font-size: 15px;
+}
+
+.aboutMore a {
+  color: var(--soft);
+  text-decoration-color: var(--rule);
+  padding-block: 8px;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+.aboutMore a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+@media (max-width: 860px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: var(--s6);
+  }
+}
+
+/* ---------- 5. what we frame ---------- */
+
+/*
+  An index, read across then down, with every row the same height as the one
+  beside it. The whole row is the link: the name underlines, the ground lifts
+  to the raise token, and the hairline under it brightens, so it is obvious
+  the row goes somewhere without an arrow being stuck on the end of it.
+*/
+.services {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(32px, 6vw, 96px);
+}
+
+.service {
+  border-top: 1px solid var(--rule);
+}
+
+.serviceLink {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 100%;
+  padding: var(--s4) var(--s4) var(--s5);
+  margin-inline: calc(var(--s4) * -1);
+  text-decoration: none;
+  transition: background-color 140ms ease;
+}
+
+.serviceLink:hover {
+  background: var(--raise);
+}
+
+.serviceName {
+  display: block;
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 5px;
+  transition: text-decoration-color 140ms ease;
+}
+
+.serviceLink:hover .serviceName,
+.serviceLink:focus-visible .serviceName {
+  text-decoration-color: currentColor;
+}
+
+.serviceBody {
+  display: block;
+  color: var(--quiet);
+  font-size: 14.5px;
+  line-height: 1.45;
+  max-width: 34em;
+}
+
+@media (max-width: 760px) {
+  .services {
+    grid-template-columns: 1fr;
+  }
+  .serviceLink {
+    padding-block: var(--s4) var(--s4);
+  }
+}
+
+/*
+  The second hang row, under the list: the frame, mat, glass and display
+  photos the owner files from his phone. Edge to edge like the first.
+*/
+.options {
+  margin-top: var(--s6);
+}
+
+.optionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s5);
+}
+
+/* ---------- 6. reviews and social ---------- */
+
+/*
+  The customer's video leads, at the width a video deserves, with the section
+  heading beside it and centred on it, the way the About sentence sits beside
+  its photograph. No review sits next to the video, because a quote beside a
+  person talking reads as that person's words. The featured reviews follow in
+  an even row. On a phone the heading comes first, then the video, then the
+  reviews.
+*/
+.voices {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: center;
+}
+
+.voicesTitle {
+  font-size: clamp(28px, 3.6vw, 50px);
+  line-height: 1.06;
+  letter-spacing: -0.026em;
+  max-width: 9em;
+  text-wrap: balance;
+}
+
+.voicesMore {
+  margin-top: var(--s5);
+  font-size: 15px;
+}
+
+.voicesMore a {
+  color: var(--soft);
+  text-decoration-color: var(--rule);
+  text-underline-offset: 4px;
+  padding-block: 8px;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+.voicesMore a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.voicesRest {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--s6) clamp(32px, 5vw, 88px);
+  margin-top: var(--s7);
+}
+
+.railAfter {
+  margin-top: var(--s7);
+}
+
+@media (max-width: 860px) {
+  .voices {
+    grid-template-columns: 1fr;
+    gap: var(--s6);
+  }
+  .voicesRest {
+    margin-top: var(--s6);
+  }
+}
+
+/*
+  Full bleed with the content gutter as padding on both sides, so the row
+  starts where the heading starts and the card after the last visible one
+  peeks past the right gutter rather than being sliced by the edge of the
+  screen. On a phone the snap is mandatory, so a swipe lands on a card.
+*/
+.rail {
+  display: flex;
+  gap: clamp(28px, 4vw, 64px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-inline: var(--rail);
+  scroll-padding-inline: var(--rail);
+  padding-bottom: var(--s5);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+.rail::-webkit-scrollbar {
+  height: 8px;
+}
+
+.rail::-webkit-scrollbar-thumb {
+  background: var(--rule);
+}
+
+.rail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.railItem {
+  flex: 0 0 auto;
+  width: clamp(258px, 72vw, 340px);
+  scroll-snap-align: start;
+}
+
+@media (max-width: 760px) {
+  .rail {
+    scroll-snap-type: x mandatory;
+  }
+  .railItem {
+    width: 78vw;
+  }
+}

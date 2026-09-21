@@ -1,0 +1,192 @@
+/*
+  The hang line. Pictures of four different heights share one horizontal
+  centre line, the way pictures are really hung on a wall. The line runs the
+  length of the wall and the pictures interrupt it.
+*/
+
+.row {
+  position: relative;
+}
+
+.scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-block: var(--s7);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+  scroll-snap-type: x proximity;
+}
+
+.scroller::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background: var(--rule);
+}
+
+.scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/*
+  A row with previous and next buttons hides the scrollbar. The bar of
+  buttons is pulled up under the pictures, and the scrollbar was being drawn
+  straight across the gallery link inside it. Swipe, trackpad, arrow keys and
+  the buttons all still move the row.
+*/
+.controlled {
+  scrollbar-width: none;
+}
+
+.controlled::-webkit-scrollbar {
+  display: none;
+}
+
+.captioned {
+  padding-bottom: calc(var(--s7) + 40px);
+}
+
+/*
+  Edge to edge at every width, as in The hang: the row starts one gutter in
+  from the left of the screen and runs off the right, so it keeps widening
+  with the window after the content column has stopped. The client named this
+  behaviour when choosing the concept.
+*/
+.inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(22px, 3.6vw, 68px);
+  width: max-content;
+  min-width: 100%;
+  padding-inline: var(--gut);
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--rule);
+}
+
+.figure {
+  position: relative;
+  margin: 0;
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+}
+
+/*
+  Height decides the size, so the four hang heights hold and the centre line
+  is shared. The one cap is on width: a very wide picture at the xl height is
+  wider than a phone, which made the first picture in the row read as a
+  cropped full bleed image rather than the first of several. Capping the width
+  scales such a picture down proportionally and leaves every other one alone.
+*/
+.figure img {
+  height: var(--h-m);
+  width: auto;
+  max-width: 78vw;
+}
+
+.s img {
+  height: var(--h-s);
+}
+
+.l img {
+  height: var(--h-l);
+}
+
+.xl img {
+  height: var(--h-xl);
+}
+
+.caption {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--quiet);
+}
+
+/* ---------- previous and next ---------- */
+
+/*
+  The bar stays on the content column while the pictures run edge to edge, so
+  the gallery link sits under the headings and the buttons never drift out to
+  the corners of a very wide screen. It hangs from its own hairline, so it
+  reads as the foot of the row rather than as two buttons left on the page.
+*/
+.controls {
+  display: flex;
+  gap: var(--s5);
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: var(--rail);
+  padding-top: var(--s4);
+  margin-top: calc(var(--s6) * -1);
+  border-top: 1px solid var(--rule);
+}
+
+.controlsStart {
+  font-size: 15px;
+  min-width: 0;
+}
+
+.controlsStart a {
+  color: var(--soft);
+  text-underline-offset: 4px;
+  text-decoration-color: var(--rule);
+  padding-block: 8px;
+}
+
+.controlsStart a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.controlsEnd {
+  display: flex;
+  gap: var(--s2);
+  flex: none;
+}
+
+.control {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.2;
+  background: transparent;
+  color: var(--soft);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease;
+}
+
+.control:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--mat);
+  border-color: var(--mat);
+}
+
+.control:disabled {
+  color: var(--quiet);
+  border-color: var(--raise);
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .controls {
+    margin-top: calc(var(--s7) * -1);
+  }
+  .controlsStart {
+    font-size: 14.5px;
+  }
+}
