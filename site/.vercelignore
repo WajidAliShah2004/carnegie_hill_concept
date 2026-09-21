@@ -1,0 +1,6 @@
+# The carnegie-hill-site Vercel project has its Root Directory set to site/.
+# Vercel uses the ignore file it finds here before the one at the repository
+# root. That root file removes site/ so the design concepts deployment stays
+# as it was, and without this file it removed site/ from this project too,
+# leaving nothing to build. Nothing the site needs is ignored here.
+*.log
