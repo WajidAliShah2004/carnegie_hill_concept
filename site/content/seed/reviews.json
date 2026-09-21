@@ -1,0 +1,138 @@
+[
+  {
+    "_id": "review-01",
+    "_type": "review",
+    "quote": {
+      "text": "Really great customer service, does everything very well and very fast. I would definitely recommend them!",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "MITEIGI",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": false,
+    "order": 1
+  },
+  {
+    "_id": "review-02",
+    "_type": "review",
+    "quote": {
+      "text": "We love it here. So helpful, great work, fair prices, and incredibly helpful in showing options at different prices. We've had 5 things framed in the last couple of weeks and have been thrilled with all of them. Highly recommend! A great local business in the neighborhood.",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Andrew Gothelf",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": true,
+    "order": 2
+  },
+  {
+    "_id": "review-03",
+    "_type": "review",
+    "quote": {
+      "text": "Very friendly staff, affordable pricing and absolutely stunning finished products! 100% recommend this place!",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Britt Kepner",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": false,
+    "order": 3
+  },
+  {
+    "_id": "review-04",
+    "_type": "review",
+    "quote": {
+      "text": "They have the highest quality of craftsmanship and are so delighted to help you get exactly what you want. I've used their services for the last 5 years and they never disappoint. I would never go anywhere else at this point.",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Pamela Goldman",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": false,
+    "order": 4
+  },
+  {
+    "_id": "review-05",
+    "_type": "review",
+    "quote": {
+      "text": "Framed a vinyl and cover for me. They were extremely helpful when it came to selecting a frame and mat color and gave a lot of thoughtful suggestions. The final product looked amazing. Great craftsmanship and great customer service.",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Benjamin Wurtzel",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": true,
+    "order": 5
+  },
+  {
+    "_id": "review-06",
+    "_type": "review",
+    "quote": {
+      "text": "I've had several pieces framed here and I couldn't be happier with the finished product. The owner is a master at his craft. He takes the time, patience, and care to work with you. I highly recommend them!",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Lori D",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": true,
+    "order": 6
+  },
+  {
+    "_id": "review-07",
+    "_type": "review",
+    "quote": {
+      "text": "They framed some art for us a few weeks ago. Really well done. A little pricey, but really high quality work.",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Rick Hoggard",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": false,
+    "order": 7
+  },
+  {
+    "_id": "review-08",
+    "_type": "review",
+    "quote": {
+      "text": "They did a great job framing a New York Times news article I'm in. Very friendly too.",
+      "source": {
+        "kind": "liveSite",
+        "detail": "Google review shown on the nyframing.com home page, copied verbatim into assets/reviews.txt on 12 September 2026"
+      }
+    },
+    "displayName": "Sidney Grant",
+    "platform": "google",
+    "sourceUrl": "",
+    "date": null,
+    "featured": false,
+    "order": 8
+  }
+]

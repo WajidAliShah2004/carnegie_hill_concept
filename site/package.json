@@ -1,0 +1,48 @@
+{
+  "name": "nyframing-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/prebuild-assets.mjs",
+    "dev": "node scripts/prebuild-assets.mjs && next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:ci": "playwright test tests/ci",
+    "check:sources": "node scripts/check-sources.mjs",
+    "check:strings": "node scripts/check-strings.mjs",
+    "check:jsonld": "node scripts/check-jsonld.mjs",
+    "check:all": "npm run check:sources && npm run check:strings && npm run check:jsonld",
+    "claims": "node scripts/claims-register.mjs",
+    "claims:check": "node scripts/claims-register.mjs --check",
+    "js-weight": "node scripts/js-weight.mjs",
+    "lh": "lhci autorun --config=lighthouserc.cjs",
+    "deploy": "node scripts/deploy.mjs",
+    "deploy:dry": "node scripts/deploy.mjs --dry-run",
+    "indexnow": "node scripts/indexnow.mjs",
+    "lh:direct": "node scripts/lighthouse-direct.mjs",
+    "lh:assert": "lhci assert --config=lighthouserc.cjs"
+  },
+  "dependencies": {
+    "@sanity/client": "^8.6.2",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/eslintrc": "^3.3.7",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.5",
+    "sharp": "^0.35.4",
+    "typescript": "^6.0.3"
+  }
+}

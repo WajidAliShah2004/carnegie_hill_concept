@@ -1,0 +1,33 @@
+.tabs {
+  border-bottom: 1px solid var(--rule);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(20px, 3vw, 44px);
+}
+
+.tab {
+  display: inline-block;
+  padding-block: var(--s3);
+  min-height: 44px;
+  font-size: 16px;
+  color: var(--quiet);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.tab:hover {
+  color: var(--mat);
+}
+
+.active {
+  color: var(--mat);
+  border-bottom-color: var(--mat);
+}

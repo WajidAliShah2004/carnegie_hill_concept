@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+public/dev-assets
+.shots
+test-results
+playwright-report
+next-env.d.ts
+tsconfig.tsbuildinfo
+.env*.local
+.lighthouseci
+.fixture-out
+public/icons

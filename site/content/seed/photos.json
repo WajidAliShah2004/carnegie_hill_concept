@@ -1,0 +1,600 @@
+[
+  {
+    "_id": "photo-work-01",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-01.jpg",
+      "width": 960,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 1
+  },
+  {
+    "_id": "photo-work-02",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-02.jpg",
+      "width": 1200,
+      "height": 890
+    },
+    "type": "completedWork",
+    "caption": {
+      "text": "A felt pennant, framed",
+      "source": {
+        "kind": "observedInPhoto",
+        "detail": "work-02.jpg. The photo was opened and checked on 14 September 2026; recorded in docs/copy-sources.md"
+      }
+    },
+    "onHomeSlider": true,
+    "order": 2
+  },
+  {
+    "_id": "photo-work-03",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-03.jpg",
+      "width": 1176,
+      "height": 1039
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 3
+  },
+  {
+    "_id": "photo-work-04",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-04.jpg",
+      "width": 1200,
+      "height": 986
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 4
+  },
+  {
+    "_id": "photo-work-05",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-05.jpg",
+      "width": 1002,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 5
+  },
+  {
+    "_id": "photo-work-06",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-06.jpg",
+      "width": 1152,
+      "height": 815
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 6
+  },
+  {
+    "_id": "photo-work-07",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-07.jpg",
+      "width": 1200,
+      "height": 622
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 7
+  },
+  {
+    "_id": "photo-work-08",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-08.jpg",
+      "width": 951,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 8
+  },
+  {
+    "_id": "photo-work-09",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-09.jpg",
+      "width": 1184,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 9
+  },
+  {
+    "_id": "photo-work-10",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-10.jpg",
+      "width": 1200,
+      "height": 832
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 10
+  },
+  {
+    "_id": "photo-work-11",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-11.jpg",
+      "width": 1200,
+      "height": 866
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 11
+  },
+  {
+    "_id": "photo-work-12",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-12.jpg",
+      "width": 814,
+      "height": 1176
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 12
+  },
+  {
+    "_id": "photo-work-13",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-13.jpg",
+      "width": 885,
+      "height": 1146
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 13
+  },
+  {
+    "_id": "photo-work-14",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-14.jpg",
+      "width": 1200,
+      "height": 1167
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 14
+  },
+  {
+    "_id": "photo-work-15",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-15.jpg",
+      "width": 995,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 15
+  },
+  {
+    "_id": "photo-work-16",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-16.jpg",
+      "width": 1200,
+      "height": 1182
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 16
+  },
+  {
+    "_id": "photo-work-17",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-17.jpg",
+      "width": 786,
+      "height": 1152
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 17
+  },
+  {
+    "_id": "photo-work-18",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-18.jpg",
+      "width": 795,
+      "height": 1176
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 18
+  },
+  {
+    "_id": "photo-work-19",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-19.jpg",
+      "width": 1200,
+      "height": 999
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 19
+  },
+  {
+    "_id": "photo-work-20",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-20.jpg",
+      "width": 1048,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 20
+  },
+  {
+    "_id": "photo-work-21",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-21.jpg",
+      "width": 919,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 21
+  },
+  {
+    "_id": "photo-work-22",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-22.jpg",
+      "width": 1128,
+      "height": 827
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 22
+  },
+  {
+    "_id": "photo-work-23",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-23.jpg",
+      "width": 955,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 23
+  },
+  {
+    "_id": "photo-work-24",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-24.jpg",
+      "width": 1200,
+      "height": 674
+    },
+    "type": "completedWork",
+    "caption": {
+      "text": "Framed pen",
+      "source": {
+        "kind": "observedInPhoto",
+        "detail": "work-24.jpg. The photo was opened and checked on 14 September 2026; recorded in docs/copy-sources.md"
+      }
+    },
+    "onHomeSlider": false,
+    "order": 24
+  },
+  {
+    "_id": "photo-work-25",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-25.jpg",
+      "width": 1136,
+      "height": 1152
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 25
+  },
+  {
+    "_id": "photo-work-26",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-26.jpg",
+      "width": 831,
+      "height": 1176
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 26
+  },
+  {
+    "_id": "photo-work-27",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-27.jpg",
+      "width": 1200,
+      "height": 421
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 27
+  },
+  {
+    "_id": "photo-work-28",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-28.jpg",
+      "width": 967,
+      "height": 1176
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 28
+  },
+  {
+    "_id": "photo-work-29",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-29.jpg",
+      "width": 1127,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 29
+  },
+  {
+    "_id": "photo-work-30",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-30.jpg",
+      "width": 963,
+      "height": 1200
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 30
+  },
+  {
+    "_id": "photo-work-31",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-31.jpg",
+      "width": 1200,
+      "height": 944
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": true,
+    "order": 31
+  },
+  {
+    "_id": "photo-work-32",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "work-32.jpg",
+      "width": 997,
+      "height": 1176
+    },
+    "type": "completedWork",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 32
+  },
+  {
+    "_id": "photo-samples",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "samples.jpg",
+      "width": 960,
+      "height": 546
+    },
+    "type": "frameOptions",
+    "caption": {
+      "text": "Corner samples on the red wall inside the shop",
+      "source": {
+        "kind": "observedInPhoto",
+        "detail": "samples.jpg. Listed in docs/copy-sources.md under observed directly in the site photos"
+      }
+    },
+    "onHomeSlider": false,
+    "order": 33
+  },
+  {
+    "_id": "photo-frame-01",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "frame-01.jpg",
+      "width": 776,
+      "height": 788
+    },
+    "type": "theShop",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 34
+  },
+  {
+    "_id": "photo-frame-02",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "frame-02.jpg",
+      "width": 555,
+      "height": 960
+    },
+    "type": "frameOptions",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 35
+  },
+  {
+    "_id": "photo-frame-03",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "frame-03.jpg",
+      "width": 606,
+      "height": 407
+    },
+    "type": "theShop",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 36
+  },
+  {
+    "_id": "photo-frame-04",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "frame-04.jpg",
+      "width": 606,
+      "height": 409
+    },
+    "type": "frameOptions",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 37
+  },
+  {
+    "_id": "photo-frame-05",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "frame-05.jpg",
+      "width": 776,
+      "height": 698
+    },
+    "type": "frameOptions",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 38
+  },
+  {
+    "_id": "photo-hero",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "hero.jpg",
+      "width": 1600,
+      "height": 1200
+    },
+    "type": "theShop",
+    "caption": {
+      "text": "Frames and mirrors on the white wall",
+      "source": {
+        "kind": "observedInPhoto",
+        "detail": "hero.jpg. Listed in docs/copy-sources.md under observed directly in the site photos"
+      }
+    },
+    "onHomeSlider": false,
+    "order": 39
+  },
+  {
+    "_id": "photo-hero-2",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "hero-2.jpg",
+      "width": 1600,
+      "height": 1200
+    },
+    "type": "theShop",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 40
+  },
+  {
+    "_id": "photo-storefront",
+    "_type": "photo",
+    "image": {
+      "_type": "localImage",
+      "path": "storefront.jpg",
+      "width": 1000,
+      "height": 374
+    },
+    "type": "theShop",
+    "caption": null,
+    "onHomeSlider": false,
+    "order": 41
+  }
+]

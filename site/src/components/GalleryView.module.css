@@ -1,0 +1,23 @@
+.head {
+  max-width: 36em;
+  margin-bottom: var(--s7);
+}
+
+.head .lede {
+  margin-top: var(--s5);
+}
+
+.wall {
+  padding-top: var(--s7);
+  padding-bottom: var(--s6);
+}
+
+@media (max-width: 760px) {
+  .head {
+    margin-bottom: var(--s6);
+  }
+  .wall {
+    padding-top: var(--s6);
+    padding-bottom: var(--s5);
+  }
+}

@@ -1,0 +1,19 @@
+.body {
+  max-width: var(--measure);
+}
+
+.link {
+  margin-top: var(--s5);
+}
+
+.link a {
+  color: var(--soft);
+  text-underline-offset: 4px;
+  text-decoration-color: var(--rule);
+  padding-block: 8px;
+}
+
+.link a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}

@@ -1,0 +1,51 @@
+.pages {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s5);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  font-size: 15px;
+}
+
+.step,
+.number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 14px;
+  color: var(--soft);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease;
+}
+
+.step:hover,
+.number:hover {
+  color: var(--ink);
+  background: var(--mat);
+}
+
+.off {
+  color: var(--quiet);
+}
+
+.off:hover {
+  color: var(--quiet);
+  background: transparent;
+}
+
+.current,
+.current:hover {
+  color: var(--mat);
+  background: transparent;
+  border-color: var(--rule);
+}

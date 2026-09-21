@@ -1,0 +1,125 @@
+name: Rollback
+
+# Put the previous build back, without rebuilding anything.
+#
+# Cloudflare Pages keeps its own deployment history, so the fastest rollback
+# there is the "Rollback to this deployment" button in the dashboard. This
+# workflow exists mainly for Hostinger, which has no history: it re-uploads the
+# `out` artifact from a chosen earlier deploy run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: The deploy run to put back. Leave empty for the one before last.
+        type: string
+        required: false
+      environment:
+        description: Which site to write over
+        type: choice
+        options: [staging, production]
+        default: production
+      dry_run:
+        description: Print what would happen and upload nothing
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: site
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rollback:
+    name: Re-upload an earlier build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    env:
+      DEPLOY_ENV: ${{ github.event.inputs.environment }}
+      DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://nyframing.com' }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install
+        run: npm ci --omit=optional
+
+      - name: Work out which build to put back
+        id: pick
+        run: |
+          RUN_ID="${{ github.event.inputs.run_id }}"
+          if [ -z "$RUN_ID" ]; then
+            RUN_ID=$(gh run list \
+              --workflow=deploy.yml \
+              --status=success \
+              --limit=2 \
+              --json databaseId \
+              --jq '.[1].databaseId')
+          fi
+          if [ -z "$RUN_ID" ]; then
+            echo "No earlier successful deploy to roll back to." >&2
+            exit 1
+          fi
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "Rolling back to deploy run $RUN_ID."
+
+      - name: Download that build
+        run: |
+          rm -rf out
+          gh run download "${{ steps.pick.outputs.run_id }}" --name "out-$DEPLOY_ENV" --dir out
+          test -f out/index.html || { echo "That artifact has no index.html." >&2; exit 1; }
+          echo "Recovered $(find out -type f | wc -l) file(s)."
+
+      - name: Put it back (dry run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: npm run deploy:dry
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          HOSTINGER_PATH: ${{ secrets.HOSTINGER_PATH }}
+
+      - name: Load the deploy key
+        if: ${{ github.event.inputs.dry_run != 'true' && vars.DEPLOY_TARGET == 'hostinger' }}
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.HOSTINGER_SSH_KEY }}
+
+      - name: Put it back
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          HOSTINGER_PATH: ${{ secrets.HOSTINGER_PATH }}
+
+      - name: What to do next
+        run: |
+          echo "The site is back on the build from run ${{ steps.pick.outputs.run_id }}."
+          echo "IndexNow is not pinged on a rollback: the URLs did not change."
+          echo "If Hostinger still serves the old page, purge the CDN in hPanel."

@@ -1,0 +1,26 @@
+# Cloudflare Pages redirect rules. Copied into out/ by the build, then the
+# deploy script appends the generated RSC payload rewrites below the marker.
+#
+# 301 is a permanent move. 200 is a rewrite: the browser keeps the URL it asked
+# for and the host serves a different file. Cloudflare reads this file top down
+# and stops at the first match.
+
+# The two pages the old site had that this one does not.
+/order-online     /contact/   301
+/order-online/    /contact/   301
+/order-online/*   /contact/   301
+/appointment      /contact/   301
+/appointment/     /contact/   301
+/appointment/*    /contact/   301
+
+# The old WordPress sitemap path.
+/sitemap_index.xml  /sitemap.xml  301
+/wp-sitemap.xml     /sitemap.xml  301
+
+# One canonical host. Cloudflare serves HTTPS and redirects HTTP by default, so
+# only the www to apex hop is needed here. If the zone already carries a
+# redirect rule for this, remove these two lines rather than keeping both.
+https://www.nyframing.com/*  https://nyframing.com/:splat  301!
+
+# --- generated: RSC payload rewrites ---
+# The deploy script writes the rules below. Do not edit them by hand.

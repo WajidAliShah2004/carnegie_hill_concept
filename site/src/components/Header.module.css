@@ -1,0 +1,181 @@
+/*
+  The header stays with the reader. It carries no rule at the top of the page,
+  where the page has its own edge, and grows a hairline once the page has
+  moved under it. The hairline is an absolutely positioned pseudo element, so
+  it appears and disappears without changing the header's height.
+
+  The fade is a scroll-driven animation: no scroll listener, no JavaScript,
+  and in a browser without it the hairline is simply always there, which is
+  the safe end of the effect.
+*/
+.site {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-block: var(--s5);
+  background: var(--ink);
+}
+
+.site::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--rule);
+}
+
+@supports (animation-timeline: scroll()) {
+  .site::after {
+    animation: headerRule linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 64px;
+  }
+}
+
+@keyframes headerRule {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s5);
+  justify-content: space-between;
+}
+
+.brand {
+  line-height: 0;
+  flex: none;
+  display: inline-flex;
+  padding: 3px;
+}
+
+/*
+  The page carries no colour of its own, so the mark is set solid white
+  rather than inverted, which would turn its orange blue.
+*/
+.brand img {
+  height: 38px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: var(--s5);
+  margin: 0;
+  padding: 0;
+}
+
+.nav a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 15px;
+  color: var(--soft);
+  padding-block: 10px;
+  border-bottom: 1px solid transparent;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.nav a:hover {
+  color: var(--mat);
+  border-bottom-color: var(--rule);
+}
+
+.nav a[aria-current] {
+  color: var(--mat);
+  border-bottom-color: var(--mat);
+}
+
+.tel {
+  text-decoration: none;
+  font-size: 15px;
+  white-space: nowrap;
+  flex: none;
+  padding-block: 10px;
+}
+
+.tel:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.telMobile,
+.menuBtn {
+  display: none;
+}
+
+.menuBtn {
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--mat);
+  font: inherit;
+  font-size: 15px;
+  min-height: 44px;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+.menuBtn:hover {
+  border-color: var(--soft);
+}
+
+@media (max-width: 860px) {
+  .inner {
+    flex-wrap: wrap;
+    row-gap: var(--s4);
+  }
+  .tel {
+    display: none;
+  }
+  .telMobile {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 7px 14px;
+    margin-left: auto;
+    margin-right: var(--s2);
+    border: 1px solid var(--rule);
+    color: var(--mat);
+    text-decoration: none;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .menuBtn {
+    display: block;
+  }
+  .nav {
+    order: 4;
+    flex-basis: 100%;
+    display: none;
+  }
+  .navOpen {
+    display: block;
+  }
+  .nav ul {
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    margin-top: var(--s2);
+  }
+  .nav li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav a {
+    display: block;
+    padding: 14px 0;
+    border: 0;
+    font-size: 16px;
+  }
+  .nav a[aria-current] {
+    border: 0;
+  }
+}

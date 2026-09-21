@@ -1,0 +1,131 @@
+.foot {
+  border-top: 1px solid var(--rule);
+  padding-block: var(--s8);
+  margin-top: var(--s9);
+}
+
+/*
+  Four columns of unequal weight. The first is wider because it holds the
+  mark and the name; the rest are the width of their content plus air. They
+  fill the page rather than leaving a hole in the middle of it.
+*/
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s7) clamp(40px, 6vw, 104px);
+  align-items: start;
+}
+
+.brandCol {
+  flex: 1.6 1 280px;
+  min-width: 0;
+  max-width: 30em;
+}
+
+.factCol {
+  flex: 1 1 15em;
+  min-width: 0;
+}
+
+.linkCol {
+  flex: 1 1 11em;
+  min-width: 130px;
+}
+
+/* the mark is set solid white, the way the header sets it */
+.mark {
+  height: 30px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  margin-bottom: var(--s5);
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s4);
+}
+
+.heading {
+  margin-bottom: var(--s4);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--quiet);
+  letter-spacing: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s2);
+  font-size: 15px;
+}
+
+.list a,
+.addr a {
+  color: var(--soft);
+  text-decoration-color: var(--rule);
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+.list a:hover,
+.addr a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.list a {
+  display: inline-block;
+  padding-block: 5px;
+}
+
+.addr {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--soft);
+  font-style: normal;
+}
+
+.quiet {
+  color: var(--quiet);
+}
+
+.legal {
+  margin-top: var(--s8);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+}
+
+.legal a {
+  color: var(--quiet);
+  text-decoration-color: var(--rule);
+  transition: color 140ms ease;
+}
+
+.legal a:hover {
+  color: var(--mat);
+}
+
+@media (max-width: 860px) {
+  .inner {
+    gap: var(--s6) var(--s7);
+  }
+  .brandCol {
+    flex-basis: 100%;
+    max-width: none;
+  }
+  .factCol {
+    flex: 1 1 14em;
+  }
+}
+
+@media (max-width: 480px) {
+  .factCol,
+  .linkCol {
+    flex-basis: 100%;
+  }
+}

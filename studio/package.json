@@ -1,0 +1,31 @@
+{
+  "name": "carnegie-hill-studio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Sanity Studio for Carnegie Hill Gallery & Custom Framing",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "typecheck": "tsc --noEmit",
+    "seed:ndjson": "node scripts/seed-to-ndjson.mjs"
+  },
+  "dependencies": {
+    "@sanity/icons": "^5.2.2",
+    "@sanity/orderable-document-list": "^2.0.24",
+    "@sanity/ui": "^4.2.1",
+    "@sanity/vision": "^6.15.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.15.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.9.0"
+  }
+}

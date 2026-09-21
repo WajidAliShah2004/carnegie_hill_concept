@@ -1,0 +1,60 @@
+.card {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+
+.platform {
+  font-size: 14px;
+  color: var(--quiet);
+}
+
+.caption {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s4);
+  font-size: 15px;
+}
+
+.link,
+.load {
+  color: var(--soft);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule);
+  padding-block: 8px;
+  min-height: 24px;
+}
+
+.load {
+  font: inherit;
+  font-size: 15px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  padding-inline: 0;
+}
+
+.link:hover,
+.load:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+  border-bottom-color: var(--mat);
+}
+
+.embed {
+  border: 1px solid var(--rule);
+  width: 100%;
+  min-height: 420px;
+  background: var(--raise);
+}

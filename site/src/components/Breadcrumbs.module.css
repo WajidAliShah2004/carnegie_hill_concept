@@ -1,0 +1,42 @@
+.crumbs {
+  padding-top: var(--s5);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  font-size: 14px;
+  color: var(--quiet);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.item + .item::before {
+  content: "/";
+  color: var(--rule);
+}
+
+.list a {
+  color: var(--quiet);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule);
+  padding-block: 6px;
+}
+
+.list a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.current {
+  color: var(--soft);
+}

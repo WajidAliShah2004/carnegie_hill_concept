@@ -1,0 +1,106 @@
+# .htaccess for the Hostinger shared host (Apache with LiteSpeed).
+#
+# The deploy script renders this file into out/.htaccess, replacing the two
+# markers below, and rsyncs it into public_html. Do not hand-edit the copy on
+# the server: the next deploy overwrites it.
+#
+# Why this file exists at all: Hostinger currently caches HTML for 7 days. The
+# owner publishes a photo from his phone and has to see it within minutes, so
+# HTML must not be cached anywhere.
+
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # ---------------------------------------------------------------
+  # HTTPS and one canonical host
+  # ---------------------------------------------------------------
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://__CANONICAL_HOST__/$1 [R=301,L]
+
+  RewriteCond %{HTTP_HOST} !^__CANONICAL_HOST_ESCAPED__$ [NC]
+  RewriteRule ^(.*)$ https://__CANONICAL_HOST__/$1 [R=301,L]
+
+  # ---------------------------------------------------------------
+  # The two pages the old site had that this one does not
+  # ---------------------------------------------------------------
+  RewriteRule ^order-online(/.*)?$ /contact/ [R=301,L]
+  RewriteRule ^appointment(/.*)?$ /contact/ [R=301,L]
+
+  # The old WordPress sitemap paths
+  RewriteRule ^sitemap_index\.xml$ /sitemap.xml [R=301,L]
+  RewriteRule ^wp-sitemap\.xml$ /sitemap.xml [R=301,L]
+
+  # ---------------------------------------------------------------
+  # Trailing slash, to match the export
+  # ---------------------------------------------------------------
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{2,5}$
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/ [R=301,L]
+
+  # ---------------------------------------------------------------
+  # RSC payload rewrites
+  #
+  # Next 16 writes the payload at dir/__next.route/__PAGE__.txt but the client
+  # prefetches dir/__next.route.__PAGE__.txt. Without these rules every
+  # prefetch is a 404. Navigation still works, but every hover costs a wasted
+  # request and a console error.
+  # ---------------------------------------------------------------
+__RSC_REWRITES__
+
+</IfModule>
+
+# -----------------------------------------------------------------
+# Caching
+# -----------------------------------------------------------------
+<IfModule mod_headers.c>
+  # HTML: never cached, anywhere. This is the whole reason for the file.
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+    Header unset Expires
+    Header unset Pragma
+  </FilesMatch>
+
+  # Generated text that changes with the content.
+  <FilesMatch "^(sitemap\.xml|robots\.txt|llms\.txt)$">
+    Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+
+  # RSC payloads follow the page they belong to.
+  <FilesMatch "\.txt$">
+    Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# Hashed build output. The file name changes when the contents change.
+<IfModule mod_headers.c>
+  <If "%{REQUEST_URI} =~ m#^/_next/static/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+</IfModule>
+
+# LiteSpeed: do not cache HTML at the server layer either.
+<IfModule LiteSpeed>
+  CacheDisable public /
+  RewriteEngine On
+  RewriteRule .* - [E=Cache-Control:no-cache]
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+AddType image/webp .webp
+AddType font/woff2 .woff2
+
+ErrorDocument 404 /404.html

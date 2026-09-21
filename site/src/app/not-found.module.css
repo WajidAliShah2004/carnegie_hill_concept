@@ -1,0 +1,81 @@
+/*
+  Three bands under one hairline each, the same arrangement the home page
+  hero uses, so a wrong URL still looks like part of the site.
+*/
+
+.inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s7) clamp(32px, 5vw, 88px);
+  align-items: start;
+}
+
+.lead {
+  grid-column: 1 / -1;
+  padding-bottom: var(--s7);
+  border-bottom: 1px solid var(--rule);
+}
+
+.title {
+  font-size: clamp(30px, 4.3vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+}
+
+.buttons {
+  margin-top: var(--s6);
+}
+
+.heading {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--quiet);
+  letter-spacing: 0;
+  margin-bottom: var(--s4);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s2);
+  font-size: 15px;
+}
+
+.list a {
+  display: inline-block;
+  padding-block: 5px;
+  color: var(--soft);
+  text-decoration-color: var(--rule);
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+.list a:hover {
+  color: var(--mat);
+  text-decoration-color: currentColor;
+}
+
+.pages {
+  grid-column: 1;
+}
+
+.facts {
+  grid-column: 2;
+  display: block;
+  font-size: 15px;
+}
+
+@media (max-width: 860px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: var(--s6);
+  }
+  .pages,
+  .facts {
+    grid-column: 1;
+  }
+  .lead {
+    padding-bottom: var(--s6);
+  }
+}

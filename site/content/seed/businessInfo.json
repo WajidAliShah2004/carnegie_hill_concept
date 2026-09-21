@@ -1,0 +1,67 @@
+{
+  "_id": "businessInfo",
+  "_type": "businessInfo",
+  "name": "Carnegie Hill Gallery & Custom Framing",
+  "alternateName": "Carnegie Hill Framing",
+  "street": "1374 Lexington Ave",
+  "crossStreets": "Between 90th and 91st St",
+  "city": "New York",
+  "region": "NY",
+  "postcode": "10128",
+  "country": "US",
+  "phone": "+12128312224",
+  "phoneDisplay": "212-831-2224",
+  "email": "masumtamu@gmail.com",
+  "hours": [
+    {
+      "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "10:00 AM",
+      "closes": "7:30 PM"
+    }
+  ],
+  "sundayNote": {
+    "text": "Sun by appointment only.",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com hours, read 12 September 2026, recorded in docs/current-site-facts.md. The live site also says \"we stay open 7 days a week\"; that line is withheld until the owner resolves the contradiction."
+    }
+  },
+  "appointmentNote": {
+    "text": "For Same Day Appointment, Please Make A Call",
+    "source": {
+      "kind": "liveSite",
+      "detail": "nyframing.com, read 12 September 2026, recorded in docs/copy-sources.md"
+    }
+  },
+  "directionsUrl": "https://maps.google.com/maps?q=1374+Lexington+Ave,+New+York,+NY+10128",
+  "googleReviewsUrl": "",
+  "googleWriteReviewUrl": "",
+  "yelpUrl": "",
+  "socialLinks": [
+    {
+      "platform": "instagram",
+      "url": "https://www.instagram.com/carnegie_hill_framing/",
+      "confirmed": false
+    },
+    {
+      "platform": "facebook",
+      "url": "https://www.facebook.com/Carnegie-Hill-Gallery-Custom-Framing-216357069787984/",
+      "confirmed": false
+    },
+    {
+      "platform": "twitter",
+      "url": "https://twitter.com/CarnegieFraming",
+      "confirmed": false
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/company/carnegie-hill-gallery-custom-framing",
+      "confirmed": false
+    }
+  ],
+  "logo": { "_type": "localImage", "path": "logo.png", "width": 985, "height": 153 },
+  "storefrontImage": { "_type": "localImage", "path": "storefront.jpg", "width": 1000, "height": 374 },
+  "shareImage": null,
+  "geo": null,
+  "foundingYear": null
+}
