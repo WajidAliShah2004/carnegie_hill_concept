@@ -211,6 +211,24 @@ The seed script turns each numeric `order` into an `orderRank` the same way the
 plugin's reset order action does, then drops `order`, so an import keeps the
 order the seed intended and no field shows up as unknown in the Studio.
 
+### Stand-in photos, for testing only
+
+The seed import leaves photos out, so a staging site built from Sanity has an
+empty gallery until the originals are uploaded. For testing, the reduced copies
+in `/assets` can go in as stand-ins:
+
+```bash
+npx sanity exec scripts/stand-in-photos.mjs --with-user-token             # add all 41
+npx sanity exec scripts/stand-in-photos.mjs --with-user-token -- --remove  # take them all out
+```
+
+Each stand-in keeps its seed id, type, caption with the caption's own source,
+slider setting and order, and carries `standIn: true`. The Studio labels it
+"Stand-in", and a production build of the site refuses to run while any photo
+has the flag. Remove them once the originals are in. Pause the "Vercel staging
+build" webhook before adding or removing them all, or each of the 41 photos
+starts its own build. The stand-ins went in on 3 October 2026.
+
 ## 8. Invite the owner
 
 1. In https://www.sanity.io/manage, open the project, then Members, then Invite.

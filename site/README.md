@@ -252,7 +252,10 @@ files themselves come from the prebuild step described above.
    spec.
 10. **Photos are reduced copies.** Everything in `/assets` came off the live
     site at reduced size. A production build refuses them. The originals have to
-    come out of the WordPress media library and into Sanity.
+    come out of the WordPress media library and into Sanity. Until then the same
+    copies are in Sanity as stand-ins (`standIn: true`) so staging shows a full
+    gallery, and a production build refuses those too. See "Stand-in photos" in
+    `studio/README.md`.
 11. **Meta titles and descriptions** are assembled from the live site headline,
     the live site page names, the business name, and the one approved intro
     sentence. Services, Gallery, Reviews, Contact and Privacy have no
