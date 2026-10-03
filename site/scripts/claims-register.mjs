@@ -147,7 +147,9 @@ async function main() {
   const next = await build()
 
   if (check) {
-    const current = existsSync(REGISTER) ? readFileSync(REGISTER, 'utf8') : ''
+    // Git on Windows checks the file out with CRLF line endings; the content is
+    // what matters, not the line ending.
+    const current = existsSync(REGISTER) ? readFileSync(REGISTER, 'utf8').replace(/\r\n/g, '\n') : ''
     if (current.trim() !== next.trim()) {
       console.error(
         'claims-register: docs/claims-register.md is out of date. Run `npm run claims` and commit the result.',

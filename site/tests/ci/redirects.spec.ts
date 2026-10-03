@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
-import { readFileSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { SITE_ROOT, outExists, readOut, isRedirectStub, stubDestination } from './routes'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { join, sep } from 'node:path'
+import { OUT_DIR, SITE_ROOT, outExists, readOut, isRedirectStub, stubDestination } from './routes'
 
 /**
  * Gate 7, redirect map.
@@ -78,10 +78,22 @@ test.describe('the moved URLs still land on Contact without host rules', () => {
   }
 })
 
-test('the generated RSC payload rewrites match the built tree', async () => {
+/**
+ * Next 16 names each payload `__next.<route>.__PAGE__.txt`, the name the
+ * browser asks for, by turning the slashes of a `path.relative` result into
+ * dots. On Linux that gives one flat file. On Windows `path.relative` returns
+ * backslashes, which survive and become folders, `__next.<route>/__PAGE__.txt`,
+ * and the rewrites map the flat name back to them. So a Linux build, which is
+ * what CI and both hosts run, has no rewrites, and a Windows build has some.
+ * Either way the browser's name must resolve, and there must be payloads.
+ */
+test('every RSC payload resolves at the name the browser asks for', async () => {
   const { rscRewrites } = await import('../../scripts/deploy.mjs')
   const rules = rscRewrites()
-  expect(rules.length, 'no RSC payload rewrites were generated').toBeGreaterThan(0)
+  const flat = readdirSync(OUT_DIR, { recursive: true, encoding: 'utf8' })
+    .map((file) => file.split(sep).join('/'))
+    .filter((file) => !file.startsWith('_next/') && /(^|\/)__next\.[^/]*\.txt$/.test(file))
+  expect(flat.length + rules.length, 'the build wrote no RSC payloads at all').toBeGreaterThan(0)
   for (const rule of rules) {
     expect(outExists(rule.to.replace(/^\//, '')), `${rule.to} is not in out/`).toBe(true)
     expect(outExists(rule.from.replace(/^\//, '')), `${rule.from} exists, so no rewrite is needed`).toBe(

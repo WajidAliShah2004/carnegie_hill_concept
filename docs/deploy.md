@@ -76,7 +76,15 @@ earlier deploy run and rsyncs it back. Artifacts are kept for 30 days.
 
 ## The payload rewrite, and why it exists
 
-Next 16's static export writes each route's React payload at
+**Only builds made on Windows need it.** Next names each payload by taking
+`path.relative` of the segment file and turning its slashes into dots. On
+Linux that gives the flat file the browser asks for. On Windows
+`path.relative` returns backslashes, which survive and become folders. CI and
+both hosts build on Linux, where `rscRewrites` finds nothing to rewrite and
+returns no rules. The rules matter for a build made on a Windows machine and
+for `scripts/serve-out.mjs` there. Found when CI first ran, 3 October 2026.
+
+On Windows, Next 16's static export writes each route's React payload at
 `dir/__next.<route>/__PAGE__.txt`, but the browser prefetches
 `dir/__next.<route>.__PAGE__.txt`, with a dot where the last slash is. The
 catch-all gallery route is worse: the file is at
