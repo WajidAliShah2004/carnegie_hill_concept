@@ -23,7 +23,9 @@ export const ownerCaption = defineSourced({
 
 export const photo = defineType({
   name: 'photo',
-  title: 'Photos',
+  // Singular, so a new one is headed "New Photo". The lists are titled
+  // "Photos" in the structure files.
+  title: 'Photo',
   type: 'document',
   icon: ImageIcon,
   fields: [

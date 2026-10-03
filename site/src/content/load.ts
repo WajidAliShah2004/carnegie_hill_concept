@@ -257,8 +257,34 @@ export const getServices = memo(async (): Promise<Service[]> => {
 /* Business info                                                       */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Every page needs the logo and the shop front photo, but the Studio leaves
+ * them optional so the business facts can be published before the original
+ * photos arrive. Until then a staging build shows the seed's reduced copy and
+ * says so. A production build stops, because the reduced copies never ship.
+ */
+const REQUIRED_IMAGES = ['logo', 'storefrontImage'] as const
+
+function withRequiredImages(doc: RawBusinessInfo): RawBusinessInfo {
+  const missing = REQUIRED_IMAGES.filter((field) => !doc[field])
+  if (missing.length === 0) return doc
+  if (isProduction) {
+    throw new Error(
+      `Business info in Sanity has no ${missing.join(' and no ')}. ` +
+        'Upload the original in the Studio: Business info, Pictures.',
+    )
+  }
+  const seed = readSeed<RawBusinessInfo>('businessInfo')
+  const filled = { ...doc }
+  for (const field of missing) {
+    console.warn(`Business info in Sanity has no ${field}. Using the reduced copy from the seed.`)
+    filled[field] = seed[field]
+  }
+  return filled
+}
+
 export const getBusinessInfo = memo(async (): Promise<BusinessInfo> => {
-  const doc = await load<RawBusinessInfo>('businessInfo', QUERIES.businessInfo)
+  const doc = withRequiredImages(await load<RawBusinessInfo>('businessInfo', QUERIES.businessInfo))
   const { _id, _type, sundayNote, appointmentNote, ...rest } = doc
   void _type
   return {

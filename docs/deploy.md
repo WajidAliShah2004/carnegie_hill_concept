@@ -156,7 +156,7 @@ Repository **secrets**:
 
 | Name | What it is |
 | --- | --- |
-| `SANITY_READ_TOKEN` | Build-time read token, viewer role |
+| `SANITY_READ_TOKEN` | Not needed while the dataset is public, which the free plan requires. Leave unset. |
 | `CLOUDFLARE_API_TOKEN` | Scoped to Cloudflare Pages edit on one account |
 | `CLOUDFLARE_ACCOUNT_ID` | |
 | `HOSTINGER_HOST` | |
