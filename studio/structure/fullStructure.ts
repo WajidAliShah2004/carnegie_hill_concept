@@ -5,6 +5,7 @@ import {DocumentIcon} from '@sanity/icons/Document'
 import {ImageIcon} from '@sanity/icons/Image'
 import {PAGE_TYPES} from '../schemas'
 import {PHOTO_TYPES} from '../schemas/photoTypes'
+import {withListTitle} from './ownerStructure'
 
 /**
  * The desk the family and the agency see. Everything, in the order they work in.
@@ -20,13 +21,16 @@ export const fullStructure: StructureResolver = (S, context) =>
           S.list()
             .title('Photos')
             .items([
-              orderableDocumentListDeskItem({
-                type: 'photo',
-                title: 'All photos, drag to order',
-                icon: ImageIcon,
-                S,
-                context,
-              }),
+              withListTitle(
+                orderableDocumentListDeskItem({
+                  type: 'photo',
+                  title: 'All photos, drag to order',
+                  icon: ImageIcon,
+                  S,
+                  context,
+                }),
+                'All photos',
+              ),
               S.divider(),
               ...PHOTO_TYPES.map((type) =>
                 S.listItem()
