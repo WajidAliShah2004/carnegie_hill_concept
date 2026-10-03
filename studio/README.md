@@ -100,6 +100,10 @@ server. The dataset is public, so the build needs no read token.
 
 ## 6. The publish webhook
 
+For now a webhook called "Vercel staging build" rebuilds the staging copy on
+Vercel instead. See "Staging on Vercel, for now" in `docs/deploy.md`. The
+GitHub webhook below is for when a production host exists.
+
 When anyone publishes in the Studio, GitHub Actions should build and deploy the
 site. Sanity does that with a webhook that calls GitHub's `repository_dispatch`.
 

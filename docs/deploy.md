@@ -23,6 +23,39 @@ commercial use and there is no budget for a paid one.
 
 Target: live within three minutes of the tap.
 
+## Staging on Vercel, for now
+
+Until a production host is set up, publishing goes to a staging copy on
+Vercel instead of through GitHub Actions. Set up and tested on 3 October 2026.
+
+| Piece | Where |
+| --- | --- |
+| Vercel project | `carnegie-hill-site`, Root Directory `site/` |
+| Branch | `staging`, cut from `production-build` |
+| Address | https://carnegie-hill-site-git-staging-wajidalishah2004s-projects.vercel.app (Vercel login needed) |
+| Variables | `SANITY_PROJECT_ID` and `SANITY_DATASET`, Preview, branch `staging` only |
+| Vercel deploy hook | "Sanity publish", branch `staging` |
+| Sanity webhook | "Vercel staging build", calls that hook on any published change to the site's document types |
+
+What this means in practice:
+
+- A publish in the Studio rebuilds staging from Sanity about a minute later.
+  Tested with a publish and its undo: two deliveries, both answered 201, two
+  builds.
+- Vercel only builds. None of the gates run on this path. CI still runs every
+  gate on every push to GitHub.
+- The client preview at https://carnegie-hill-site.vercel.app is the same
+  project's Production, built from `master` and the seed. It has no Sanity
+  variables, so it keeps the seed's photos until real photos are in Sanity.
+- Code changes reach staging only when `staging` moves: fast forward it to
+  `production-build` and push.
+- The deploy hook URL lives only in the Sanity webhook's settings. Anyone with
+  it can start a build, so it is not written down anywhere else. If it leaks,
+  remove the hook with `vercel deploy-hooks remove`, create a new one, and paste
+  the new URL into the Sanity webhook.
+- Production never runs on Vercel: the Hobby plan does not allow commercial
+  use.
+
 ## The two hosts
 
 `DEPLOY_TARGET` picks one. It is a repository variable, not a secret.
