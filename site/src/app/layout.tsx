@@ -15,7 +15,7 @@ const face = Schibsted_Grotesk({
   variable: '--font-face',
 })
 
-const siteUrl = process.env.SITE_URL ?? 'https://nyframing.com'
+const siteUrl = process.env.SITE_URL ?? 'https://www.carnegiehillframing.com'
 
 /**
  * Only what every page shares. No description here: Next hands a missing

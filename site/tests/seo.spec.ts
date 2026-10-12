@@ -136,7 +136,7 @@ for (const route of CONTENT_PAGES) {
     const canonical = page.locator('link[rel="canonical"]')
     await expect(canonical).toHaveCount(1)
     const href = await canonical.getAttribute('href')
-    expect(href).toBe(`https://nyframing.com${route}`)
+    expect(href).toBe(`https://www.carnegiehillframing.com${route}`)
 
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website')
 
@@ -149,7 +149,7 @@ for (const route of CONTENT_PAGES) {
 
     const store = graph.find((node) => node['@type'] === 'Store')
     expect(store, 'a Store node').toBeTruthy()
-    expect(store?.['@id']).toBe('https://nyframing.com/#organization')
+    expect(store?.['@id']).toBe('https://www.carnegiehillframing.com/#organization')
     for (const field of ['name', 'url', 'telephone', 'email', 'address', 'openingHoursSpecification']) {
       expect(store?.[field], `Store.${field}`).toBeTruthy()
     }
@@ -164,15 +164,15 @@ for (const route of CONTENT_PAGES) {
     expect(days.has('https://schema.org/Sunday')).toBe(false)
 
     const website = graph.find((node) => node['@type'] === 'WebSite')
-    expect(website?.publisher).toEqual({ '@id': 'https://nyframing.com/#organization' })
+    expect(website?.publisher).toEqual({ '@id': 'https://www.carnegiehillframing.com/#organization' })
 
     const pageNodes = graph.filter((node) =>
       ['WebPage', 'AboutPage', 'ContactPage', 'CollectionPage'].includes(String(node['@type'])),
     )
     expect(pageNodes, 'one page node').toHaveLength(1)
-    expect(pageNodes[0]?.url).toBe(`https://nyframing.com${route}`)
-    expect(pageNodes[0]?.isPartOf).toEqual({ '@id': 'https://nyframing.com/#website' })
-    expect(pageNodes[0]?.about).toEqual({ '@id': 'https://nyframing.com/#organization' })
+    expect(pageNodes[0]?.url).toBe(`https://www.carnegiehillframing.com${route}`)
+    expect(pageNodes[0]?.isPartOf).toEqual({ '@id': 'https://www.carnegiehillframing.com/#website' })
+    expect(pageNodes[0]?.about).toEqual({ '@id': 'https://www.carnegiehillframing.com/#organization' })
   })
 
   test(`${route} emits none of the forbidden schema`, async ({ page }) => {
@@ -233,7 +233,7 @@ test('robots.txt is served and says what this environment should say', async ({ 
   expect(body).toContain('User-agent: *')
   if (process.env.DEPLOY_ENV === 'production') {
     expect(body).toContain('Allow: /')
-    expect(body).toContain('Sitemap: https://nyframing.com/sitemap.xml')
+    expect(body).toContain('Sitemap: https://www.carnegiehillframing.com/sitemap.xml')
     expect(body).not.toContain('Disallow: /')
   } else {
     expect(body).toContain('Disallow: /')
@@ -246,7 +246,7 @@ test('llms.txt is served and holds only facts, titles, and service names', async
   const body = await response.text()
   expect(body).toContain('Carnegie Hill Gallery & Custom Framing')
   expect(body).toContain('1374 Lexington Ave')
-  expect(body).toContain('https://nyframing.com/contact/')
+  expect(body).toContain('https://www.carnegiehillframing.com/contact/')
   expect(body).not.toContain('7 days')
   // built as a code point so this repo holds no em dash character at all
   expect(body).not.toContain(String.fromCharCode(0x2014))

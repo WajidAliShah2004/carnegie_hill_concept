@@ -1,6 +1,6 @@
 # site
 
-The production front end for nyframing.com. Next.js App Router, TypeScript,
+The production front end for www.carnegiehillframing.com. Next.js App Router, TypeScript,
 `output: 'export'`, `trailingSlash: true`. No runtime server. No Tailwind, no UI
 kit: plain CSS with one global stylesheet of tokens and a CSS module per
 component.
@@ -214,7 +214,7 @@ files themselves come from the prebuild step described above.
 | `SANITY_PROJECT_ID` | Set: read Sanity. Unset: read `content/seed/`. |
 | `SANITY_DATASET` | Defaults to `production`. |
 | `SANITY_READ_TOKEN` | Build-time read token. |
-| `SITE_URL` | Defaults to `https://nyframing.com`. |
+| `SITE_URL` | Defaults to `https://www.carnegiehillframing.com`. |
 | `DEPLOY_ENV` | `staging` or `production`. Anything but `production` emits `noindex` and keeps reviews that have no source link. `production` also refuses any `localImage`. |
 | `SHOW_UNCONFIRMED` | `1` renders social links the owner has not confirmed. Staging only. Default hidden. |
 | `DEPLOY_TARGET` | `cloudflare` or `hostinger`. Read by the deploy script, not by the site. |

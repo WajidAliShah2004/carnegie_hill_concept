@@ -56,6 +56,32 @@ What this means in practice:
 - Production never runs on Vercel: the Hobby plan does not allow commercial
   use.
 
+## The domain, 7 October 2026
+
+The site's address is https://www.carnegiehillframing.com. The domain is
+registered at Spaceship, and its mail is Spacemail, so the DNS zone there
+carries both the mail records and the site records.
+
+| Host | Type | Value |
+| --- | --- | --- |
+| `@` | A | `216.198.79.1` (the Vercel project's address) |
+| `www` | CNAME | `cname.vercel-dns.com` |
+
+Vercel holds both names on the `carnegie-hill-site` project. `www` is the main
+one; the apex answers with a 308 to `www`. `SITE_URL` is set to the `www`
+address in the project's Production environment and is the code default, so
+every canonical, sitemap entry, and `@id` uses it. If the site moves to
+Cloudflare Pages or Hostinger, point `@` and `www` at the new host and keep the
+Spacemail rows as they are.
+
+Still open after this: the site stays `noindex` with a blocking robots.txt
+until `DEPLOY_ENV=production` is set on Vercel, and that build refuses every
+stand-in photo, so it needs the original photos in Sanity first. nyframing.com,
+which holds the search history, was found on 3 October 2026 redirecting to a
+domain for sale page; it should redirect to the new address once the client
+sorts out who controls it. Web3Forms and hCaptcha keys must list the new
+domain too.
+
 ## The two hosts
 
 `DEPLOY_TARGET` picks one. It is a repository variable, not a secret.
@@ -186,11 +212,11 @@ Repository **variables** (not secret, visible in the Actions log):
 | Name | What it is |
 | --- | --- |
 | `DEPLOY_TARGET` | `cloudflare` or `hostinger` |
-| `SITE_URL` | `https://nyframing.com` |
+| `SITE_URL` | `https://www.carnegiehillframing.com` |
 | `SANITY_PROJECT_ID` | Unset until the Sanity project exists. Unset means build from `site/content/seed/`. |
 | `SANITY_DATASET` | `production` |
 | `CLOUDFLARE_PROJECT_NAME` | The Pages project name |
-| `NEXT_PUBLIC_WEB3FORMS_KEY` | Public by design, restricted to nyframing.com in the Web3Forms dashboard |
+| `NEXT_PUBLIC_WEB3FORMS_KEY` | Public by design, restricted to www.carnegiehillframing.com in the Web3Forms dashboard |
 | `NEXT_PUBLIC_HCAPTCHA_SITEKEY` | Public by design |
 
 Repository **secrets**:
