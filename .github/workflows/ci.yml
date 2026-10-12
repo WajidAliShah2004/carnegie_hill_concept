@@ -31,7 +31,7 @@ jobs:
       SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
       SANITY_DATASET: ${{ vars.SANITY_DATASET }}
       SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
-      SITE_URL: ${{ vars.SITE_URL || 'https://nyframing.com' }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://www.carnegiehillframing.com' }}
       NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_KEY }}
       NEXT_PUBLIC_HCAPTCHA_SITEKEY: ${{ vars.NEXT_PUBLIC_HCAPTCHA_SITEKEY }}
 

@@ -14,6 +14,10 @@ function today(): string {
 
 type PhotoDraft = {caption?: {text?: string; source?: {kind?: string; detail?: string}}} | null
 
+function captionText(doc: PhotoDraft): string {
+  return (doc?.caption?.text || '').trim()
+}
+
 /**
  * Safety net on Publish for photos.
  *
@@ -32,10 +36,14 @@ function withCaptionSource(action: DocumentActionComponent): DocumentActionCompo
       ...original,
       onHandle: () => {
         const draft = props.draft as PhotoDraft
-        const text = (draft?.caption?.text || '').trim()
+        const text = captionText(draft)
         if (text) {
           const source = draft?.caption?.source
-          if (source?.kind !== 'ownerWritten' || !source?.detail) {
+          // Words already published keep the source they came with. Only new or
+          // changed words are the owner's.
+          const unchanged = text === captionText(props.published as PhotoDraft)
+          const keepsItsSource = unchanged && Boolean(source?.kind && source?.detail)
+          if (!keepsItsSource && (source?.kind !== 'ownerWritten' || !source?.detail)) {
             patch.execute([
               {
                 set: {

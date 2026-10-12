@@ -93,7 +93,7 @@ const ORDER_RANK = `| order(orderRank asc, _createdAt asc)`
 
 export const QUERIES = {
   photos: `*[_type == "photo" && defined(image)] ${ORDER_RANK} {
-    _id, _type, _updatedAt, type, caption, onHomeSlider, orderRank, "image": image ${IMAGE_PROJECTION}
+    _id, _type, _updatedAt, type, caption, onHomeSlider, orderRank, standIn, "image": image ${IMAGE_PROJECTION}
   }`,
   reviews: `*[_type == "review"] ${ORDER_RANK} {
     _id, _type, _updatedAt, quote, displayName, platform, sourceUrl, date, featured, orderRank
@@ -148,6 +148,15 @@ function memo<T>(fn: () => Promise<T>): () => Promise<T> {
 
 export const getPhotos = memo(async (): Promise<Photo[]> => {
   const raw = await load<RawPhoto[]>('photos', QUERIES.photos)
+  // Stand-ins are the reduced copies put into Sanity for testing, and they
+  // never ship. studio/scripts/stand-in-photos.mjs --remove takes them out.
+  const standIns = raw.filter((doc) => doc.standIn)
+  if (isProduction && standIns.length > 0) {
+    throw new Error(
+      `${standIns.length} photo(s) in Sanity are stand-in copies, not originals. ` +
+        'Upload the originals, then run `npx sanity exec scripts/stand-in-photos.mjs --with-user-token -- --remove` in studio/.',
+    )
+  }
   return inOrder(raw).map((doc, index) => ({
     id: doc._id,
     image: doc.image,
@@ -257,8 +266,34 @@ export const getServices = memo(async (): Promise<Service[]> => {
 /* Business info                                                       */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Every page needs the logo and the shop front photo, but the Studio leaves
+ * them optional so the business facts can be published before the original
+ * photos arrive. Until then a staging build shows the seed's reduced copy and
+ * says so. A production build stops, because the reduced copies never ship.
+ */
+const REQUIRED_IMAGES = ['logo', 'storefrontImage'] as const
+
+function withRequiredImages(doc: RawBusinessInfo): RawBusinessInfo {
+  const missing = REQUIRED_IMAGES.filter((field) => !doc[field])
+  if (missing.length === 0) return doc
+  if (isProduction) {
+    throw new Error(
+      `Business info in Sanity has no ${missing.join(' and no ')}. ` +
+        'Upload the original in the Studio: Business info, Pictures.',
+    )
+  }
+  const seed = readSeed<RawBusinessInfo>('businessInfo')
+  const filled = { ...doc }
+  for (const field of missing) {
+    console.warn(`Business info in Sanity has no ${field}. Using the reduced copy from the seed.`)
+    filled[field] = seed[field]
+  }
+  return filled
+}
+
 export const getBusinessInfo = memo(async (): Promise<BusinessInfo> => {
-  const doc = await load<RawBusinessInfo>('businessInfo', QUERIES.businessInfo)
+  const doc = withRequiredImages(await load<RawBusinessInfo>('businessInfo', QUERIES.businessInfo))
   const { _id, _type, sundayNote, appointmentNote, ...rest } = doc
   void _type
   return {

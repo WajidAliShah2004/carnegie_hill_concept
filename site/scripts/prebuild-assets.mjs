@@ -6,7 +6,8 @@
  *
  * The files in `/assets` are reduced copies pulled off the live site. They are
  * not the originals and must never ship. A build with `DEPLOY_ENV=production`
- * fails here if any `localImage` is still referenced.
+ * fails here if it would read the seed and any `localImage` is still
+ * referenced. A production build that reads Sanity copies none of them.
  *
  * Variants: `<name>-<width>.webp` at 480, 768, 1200 and 1600, never wider than
  * the original, so staging behaves like the Sanity CDN path rather than
@@ -74,14 +75,21 @@ function collectLocalImages(node, into) {
   }
 }
 
+const isProduction = process.env.DEPLOY_ENV === 'production'
+const usingSanity = Boolean(process.env.SANITY_PROJECT_ID)
+
+// A production build that reads Sanity never falls back to the seed (see
+// getBusinessInfo in src/content/load.ts), so it needs none of these files and
+// none of them should land in `out/`. Every other build reads the seed's
+// pictures, directly or as the stand-in for an image Sanity does not have yet.
 const referenced = new Set()
-if (existsSync(seedDir)) {
+if (existsSync(seedDir) && !(isProduction && usingSanity)) {
   for (const file of seedFiles(seedDir)) {
     collectLocalImages(JSON.parse(readFileSync(file, 'utf8')), referenced)
   }
 }
 
-if (process.env.DEPLOY_ENV === 'production' && referenced.size > 0) {
+if (isProduction && referenced.size > 0) {
   console.error(
     `\nProduction build refused.\n\n` +
       `${referenced.size} localImage reference(s) still point at the reduced copies in /assets:\n` +

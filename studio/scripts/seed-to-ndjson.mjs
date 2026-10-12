@@ -18,6 +18,7 @@ import {readdir, readFile, mkdir, writeFile} from 'node:fs/promises'
 import {existsSync} from 'node:fs'
 import {dirname, join, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
+import {LexoRank} from 'lexorank'
 
 const studioDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const seedDir = resolve(studioDir, '..', 'site', 'content', 'seed')
@@ -124,6 +125,48 @@ function unsetAt(doc, path) {
 }
 
 /** Every .json file in the seed folder and its subfolders, as paths relative to it. */
+/**
+ * The seed writes an empty field as `null`. Sanity leaves an empty field out,
+ * and the Studio reports a stored `null` as a value of the wrong type. The site
+ * treats a missing field and `null` the same way.
+ */
+function dropNulls(value) {
+  if (Array.isArray(value)) {
+    for (const item of value) dropNulls(item)
+  } else if (value && typeof value === 'object') {
+    for (const [key, child] of Object.entries(value)) {
+      if (child === null) delete value[key]
+      else dropNulls(child)
+    }
+  }
+}
+
+/**
+ * The types the drag to order plugin sorts. It keeps its own string field,
+ * `orderRank`, and the site sorts on that. The seed carries a numeric `order`
+ * instead, which no Studio schema knows, so it is turned into a rank here the
+ * same way the plugin's reset order action does it, and then removed.
+ */
+const ORDERABLE = new Set(['photo', 'review', 'service', 'socialPost'])
+
+function rankByOrder(docs) {
+  const byType = new Map()
+  for (const doc of docs) {
+    if (!ORDERABLE.has(doc._type)) continue
+    if (!byType.has(doc._type)) byType.set(doc._type, [])
+    byType.get(doc._type).push(doc)
+  }
+  for (const list of byType.values()) {
+    list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    let rank = LexoRank.min()
+    for (const doc of list) {
+      rank = rank.genNext().genNext()
+      doc.orderRank = rank.toString()
+      delete doc.order
+    }
+  }
+}
+
 async function collectJsonFiles(dir, prefix = '') {
   const entries = await readdir(dir, {withFileTypes: true})
   const found = []
@@ -153,7 +196,7 @@ async function main() {
     return
   }
 
-  const lines = []
+  const kept = []
   let skipped = 0
   let stripped = 0
   let flagged = 0
@@ -177,6 +220,7 @@ async function main() {
         return
       }
       const copy = structuredClone(doc)
+      dropNulls(copy)
       if (!copy._id) {
         copy._id = `${copy._type}-${file.replace(/\.json$/, '').replace(/[^a-zA-Z0-9]+/g, '-')}-${index}`
       }
@@ -208,9 +252,12 @@ async function main() {
         for (const problem of problems) console.warn(`  ${problem}`)
       }
 
-      lines.push(JSON.stringify(copy))
+      kept.push(copy)
     })
   }
+
+  rankByOrder(kept)
+  const lines = kept.map((doc) => JSON.stringify(doc))
 
   await mkdir(dirname(outFile), {recursive: true})
   await writeFile(outFile, lines.join('\n') + (lines.length ? '\n' : ''), 'utf8')
@@ -225,7 +272,8 @@ async function main() {
     )
   }
   console.log('Import it with:')
-  console.log('  npx sanity dataset import seed/seed.ndjson production')
+  console.log('  npx sanity datasets import seed/seed.ndjson --dataset production')
+  console.log('Add --replace to overwrite documents that are already there.')
 }
 
 main().catch((error) => {

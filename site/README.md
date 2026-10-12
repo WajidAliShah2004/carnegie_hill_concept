@@ -1,6 +1,6 @@
 # site
 
-The production front end for nyframing.com. Next.js App Router, TypeScript,
+The production front end for www.carnegiehillframing.com. Next.js App Router, TypeScript,
 `output: 'export'`, `trailingSlash: true`. No runtime server. No Tailwind, no UI
 kit: plain CSS with one global stylesheet of tokens and a CSS module per
 component.
@@ -214,7 +214,7 @@ files themselves come from the prebuild step described above.
 | `SANITY_PROJECT_ID` | Set: read Sanity. Unset: read `content/seed/`. |
 | `SANITY_DATASET` | Defaults to `production`. |
 | `SANITY_READ_TOKEN` | Build-time read token. |
-| `SITE_URL` | Defaults to `https://nyframing.com`. |
+| `SITE_URL` | Defaults to `https://www.carnegiehillframing.com`. |
 | `DEPLOY_ENV` | `staging` or `production`. Anything but `production` emits `noindex` and keeps reviews that have no source link. `production` also refuses any `localImage`. |
 | `SHOW_UNCONFIRMED` | `1` renders social links the owner has not confirmed. Staging only. Default hidden. |
 | `DEPLOY_TARGET` | `cloudflare` or `hostinger`. Read by the deploy script, not by the site. |
@@ -252,7 +252,10 @@ files themselves come from the prebuild step described above.
    spec.
 10. **Photos are reduced copies.** Everything in `/assets` came off the live
     site at reduced size. A production build refuses them. The originals have to
-    come out of the WordPress media library and into Sanity.
+    come out of the WordPress media library and into Sanity. Until then the same
+    copies are in Sanity as stand-ins (`standIn: true`) so staging shows a full
+    gallery, and a production build refuses those too. See "Stand-in photos" in
+    `studio/README.md`.
 11. **Meta titles and descriptions** are assembled from the live site headline,
     the live site page names, the business name, and the one approved intro
     sentence. Services, Gallery, Reviews, Contact and Privacy have no

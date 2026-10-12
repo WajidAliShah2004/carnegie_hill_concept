@@ -23,7 +23,7 @@ import { OUT_DIR } from './lib/content.mjs'
 const dryRun = process.argv.includes('--dry-run')
 const key = process.env.INDEXNOW_KEY ?? ''
 const environment = process.env.DEPLOY_ENV ?? 'development'
-const siteUrl = (process.env.SITE_URL ?? 'https://nyframing.com').replace(/\/$/, '')
+const siteUrl = (process.env.SITE_URL ?? 'https://www.carnegiehillframing.com').replace(/\/$/, '')
 const host = new URL(siteUrl).host
 const ENDPOINT = 'https://api.indexnow.org/IndexNow'
 

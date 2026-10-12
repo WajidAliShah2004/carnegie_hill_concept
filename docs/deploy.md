@@ -23,6 +23,65 @@ commercial use and there is no budget for a paid one.
 
 Target: live within three minutes of the tap.
 
+## Staging on Vercel, for now
+
+Until a production host is set up, publishing goes to a staging copy on
+Vercel instead of through GitHub Actions. Set up and tested on 3 October 2026.
+
+| Piece | Where |
+| --- | --- |
+| Vercel project | `carnegie-hill-site`, Root Directory `site/` |
+| Branch | `staging`, cut from `production-build` |
+| Address | https://carnegie-hill-site-git-staging-wajidalishah2004s-projects.vercel.app (Vercel login needed) |
+| Variables | `SANITY_PROJECT_ID` and `SANITY_DATASET`, Preview, branch `staging` only |
+| Vercel deploy hook | "Sanity publish", branch `staging` |
+| Sanity webhook | "Vercel staging build", calls that hook on any published change to the site's document types |
+
+What this means in practice:
+
+- A publish in the Studio rebuilds staging from Sanity about a minute later.
+  Tested with a publish and its undo: two deliveries, both answered 201, two
+  builds.
+- Vercel only builds. None of the gates run on this path. CI still runs every
+  gate on every push to GitHub.
+- The client preview at https://carnegie-hill-site.vercel.app is the same
+  project's Production, built from `master` and the seed. It has no Sanity
+  variables, so it keeps the seed's photos until real photos are in Sanity.
+- Code changes reach staging only when `staging` moves: fast forward it to
+  `production-build` and push.
+- The deploy hook URL lives only in the Sanity webhook's settings. Anyone with
+  it can start a build, so it is not written down anywhere else. If it leaks,
+  remove the hook with `vercel deploy-hooks remove`, create a new one, and paste
+  the new URL into the Sanity webhook.
+- Production never runs on Vercel: the Hobby plan does not allow commercial
+  use.
+
+## The domain, 7 October 2026
+
+The site's address is https://www.carnegiehillframing.com. The domain is
+registered at Spaceship, and its mail is Spacemail, so the DNS zone there
+carries both the mail records and the site records.
+
+| Host | Type | Value |
+| --- | --- | --- |
+| `@` | A | `216.198.79.1` (the Vercel project's address) |
+| `www` | CNAME | `cname.vercel-dns.com` |
+
+Vercel holds both names on the `carnegie-hill-site` project. `www` is the main
+one; the apex answers with a 308 to `www`. `SITE_URL` is set to the `www`
+address in the project's Production environment and is the code default, so
+every canonical, sitemap entry, and `@id` uses it. If the site moves to
+Cloudflare Pages or Hostinger, point `@` and `www` at the new host and keep the
+Spacemail rows as they are.
+
+Still open after this: the site stays `noindex` with a blocking robots.txt
+until `DEPLOY_ENV=production` is set on Vercel, and that build refuses every
+stand-in photo, so it needs the original photos in Sanity first. nyframing.com,
+which holds the search history, was found on 3 October 2026 redirecting to a
+domain for sale page; it should redirect to the new address once the client
+sorts out who controls it. Web3Forms and hCaptcha keys must list the new
+domain too.
+
 ## The two hosts
 
 `DEPLOY_TARGET` picks one. It is a repository variable, not a secret.
@@ -76,7 +135,15 @@ earlier deploy run and rsyncs it back. Artifacts are kept for 30 days.
 
 ## The payload rewrite, and why it exists
 
-Next 16's static export writes each route's React payload at
+**Only builds made on Windows need it.** Next names each payload by taking
+`path.relative` of the segment file and turning its slashes into dots. On
+Linux that gives the flat file the browser asks for. On Windows
+`path.relative` returns backslashes, which survive and become folders. CI and
+both hosts build on Linux, where `rscRewrites` finds nothing to rewrite and
+returns no rules. The rules matter for a build made on a Windows machine and
+for `scripts/serve-out.mjs` there. Found when CI first ran, 3 October 2026.
+
+On Windows, Next 16's static export writes each route's React payload at
 `dir/__next.<route>/__PAGE__.txt`, but the browser prefetches
 `dir/__next.<route>.__PAGE__.txt`, with a dot where the last slash is. The
 catch-all gallery route is worse: the file is at
@@ -145,18 +212,18 @@ Repository **variables** (not secret, visible in the Actions log):
 | Name | What it is |
 | --- | --- |
 | `DEPLOY_TARGET` | `cloudflare` or `hostinger` |
-| `SITE_URL` | `https://nyframing.com` |
+| `SITE_URL` | `https://www.carnegiehillframing.com` |
 | `SANITY_PROJECT_ID` | Unset until the Sanity project exists. Unset means build from `site/content/seed/`. |
 | `SANITY_DATASET` | `production` |
 | `CLOUDFLARE_PROJECT_NAME` | The Pages project name |
-| `NEXT_PUBLIC_WEB3FORMS_KEY` | Public by design, restricted to nyframing.com in the Web3Forms dashboard |
+| `NEXT_PUBLIC_WEB3FORMS_KEY` | Public by design, restricted to www.carnegiehillframing.com in the Web3Forms dashboard |
 | `NEXT_PUBLIC_HCAPTCHA_SITEKEY` | Public by design |
 
 Repository **secrets**:
 
 | Name | What it is |
 | --- | --- |
-| `SANITY_READ_TOKEN` | Build-time read token, viewer role |
+| `SANITY_READ_TOKEN` | Not needed while the dataset is public, which the free plan requires. Leave unset. |
 | `CLOUDFLARE_API_TOKEN` | Scoped to Cloudflare Pages edit on one account |
 | `CLOUDFLARE_ACCOUNT_ID` | |
 | `HOSTINGER_HOST` | |

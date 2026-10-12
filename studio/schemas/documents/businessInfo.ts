@@ -165,6 +165,10 @@ export const businessInfo = defineType({
       type: 'image',
       group: 'images',
       options: {hotspot: false},
+      // A warning, not an error: the facts can be published before the original
+      // arrives. The production site build refuses to run without it.
+      validation: (Rule) =>
+        Rule.required().warning('Add the logo. The live site cannot be built without it.'),
     }),
     defineField({
       name: 'storefrontImage',
@@ -172,6 +176,10 @@ export const businessInfo = defineType({
       type: 'image',
       group: 'images',
       options: {hotspot: true},
+      validation: (Rule) =>
+        Rule.required().warning(
+          'Add the shop front photo. The live site cannot be built without it.',
+        ),
     }),
     defineField({
       name: 'shareImage',

@@ -48,7 +48,7 @@ jobs:
     env:
       DEPLOY_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/master' && 'production' || 'staging') }}
       DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET }}
-      SITE_URL: ${{ vars.SITE_URL || 'https://nyframing.com' }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://www.carnegiehillframing.com' }}
       SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
       SANITY_DATASET: ${{ vars.SANITY_DATASET }}
       SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}

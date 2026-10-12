@@ -28,7 +28,7 @@ import { OUT_DIR, SITE_ROOT } from './lib/content.mjs'
 const dryRun = process.argv.includes('--dry-run') || process.env.DEPLOY_DRY_RUN === '1'
 const target = (process.env.DEPLOY_TARGET ?? '').toLowerCase()
 const environment = process.env.DEPLOY_ENV ?? 'staging'
-const siteUrl = process.env.SITE_URL ?? 'https://nyframing.com'
+const siteUrl = process.env.SITE_URL ?? 'https://www.carnegiehillframing.com'
 const canonicalHost = new URL(siteUrl).host
 
 const MARKER = '# --- generated: RSC payload rewrites ---'

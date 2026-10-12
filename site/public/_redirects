@@ -17,10 +17,10 @@
 /sitemap_index.xml  /sitemap.xml  301
 /wp-sitemap.xml     /sitemap.xml  301
 
-# One canonical host. Cloudflare serves HTTPS and redirects HTTP by default, so
-# only the www to apex hop is needed here. If the zone already carries a
+# One canonical host, www. Cloudflare serves HTTPS and redirects HTTP by default, so
+# only the apex to www hop is needed here. If the zone already carries a
 # redirect rule for this, remove these two lines rather than keeping both.
-https://www.nyframing.com/*  https://nyframing.com/:splat  301!
+https://carnegiehillframing.com/*  https://www.carnegiehillframing.com/:splat  301!
 
 # --- generated: RSC payload rewrites ---
 # The deploy script writes the rules below. Do not edit them by hand.

@@ -17,31 +17,11 @@ const onlyPhoto = (templates: Template[]) =>
   templates.filter((template) => template.schemaType === 'photo')
 
 export default defineConfig([
-  {
-    name: 'default',
-    title: 'Carnegie Hill Gallery & Custom Framing',
-    basePath: '/',
-    projectId,
-    dataset,
-    plugins: [
-      structureTool({
-        name: 'content',
-        title: 'Content',
-        structure: (S, context) =>
-          isOwnerUser(context.currentUser) ? ownerStructure(S, context) : fullStructure(S, context),
-      }),
-      visionTool(),
-    ],
-    schema: {
-      types: schemaTypes,
-      templates: withoutSingletons,
-    },
-    document: {
-      actions: fullDocumentActions,
-      newDocumentOptions: (prev) =>
-        prev.filter((item) => !SINGLETON_TYPES.has(item.templateId)),
-    },
-  },
+  /**
+   * Sanity needs every workspace path to have the same number of segments, so
+   * neither desk can sit at `/`. The owner's desk comes first: the bare address
+   * opens the first workspace, so he lands on Photos whatever link he types.
+   */
   {
     name: 'owner',
     title: 'Photos',
@@ -65,6 +45,31 @@ export default defineConfig([
     },
     studio: {
       components: {layout: OwnerAddPhotoLayout},
+    },
+  },
+  {
+    name: 'default',
+    title: 'Carnegie Hill Gallery & Custom Framing',
+    basePath: '/full',
+    projectId,
+    dataset,
+    plugins: [
+      structureTool({
+        name: 'content',
+        title: 'Content',
+        structure: (S, context) =>
+          isOwnerUser(context.currentUser) ? ownerStructure(S, context) : fullStructure(S, context),
+      }),
+      visionTool(),
+    ],
+    schema: {
+      types: schemaTypes,
+      templates: withoutSingletons,
+    },
+    document: {
+      actions: fullDocumentActions,
+      newDocumentOptions: (prev) =>
+        prev.filter((item) => !SINGLETON_TYPES.has(item.templateId)),
     },
   },
 ])

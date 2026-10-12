@@ -6,7 +6,7 @@
  * staging build never claims to be production.
  */
 
-const raw = process.env.SITE_URL ?? 'https://nyframing.com'
+const raw = process.env.SITE_URL ?? 'https://www.carnegiehillframing.com'
 
 /** No trailing slash, so `${SITE_URL}${path}` is always right. */
 export const SITE_URL = raw.replace(/\/+$/, '')

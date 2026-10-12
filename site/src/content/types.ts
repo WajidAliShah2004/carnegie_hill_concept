@@ -82,6 +82,8 @@ export type RawPhoto = Timestamped &
     type: PhotoType
     caption?: Sourced | null
     onHomeSlider: boolean
+    /** A reduced copy put into Sanity for testing. Production refuses it. */
+    standIn?: boolean
   }
 
 export type Photo = {

@@ -23,7 +23,9 @@ export const ownerCaption = defineSourced({
 
 export const photo = defineType({
   name: 'photo',
-  title: 'Photos',
+  // Singular, so a new one is headed "New Photo". The lists are titled
+  // "Photos" in the structure files.
+  title: 'Photo',
   type: 'document',
   icon: ImageIcon,
   fields: [
@@ -57,6 +59,16 @@ export const photo = defineType({
       initialValue: false,
     }),
     orderRankField({type: 'photo', newItemPosition: 'before'}),
+    // Set only by scripts/stand-in-photos.mjs. Shown only on a photo that has it.
+    defineField({
+      name: 'standIn',
+      title: 'Stand-in copy',
+      type: 'boolean',
+      readOnly: true,
+      hidden: ({value}) => !value,
+      description:
+        'A reduced copy from the old website, put here for testing. The live site will not build while any photo has this. Delete the photo once the original is uploaded.',
+    }),
   ],
   preview: {
     select: {
@@ -64,23 +76,27 @@ export const photo = defineType({
       type: 'type',
       caption: 'caption.text',
       onHomeSlider: 'onHomeSlider',
+      standIn: 'standIn',
     },
     prepare({
       media,
       type,
       caption,
       onHomeSlider,
+      standIn,
     }: {
       media?: unknown
       type?: string
       caption?: string
       onHomeSlider?: boolean
+      standIn?: boolean
     }) {
       const typeTitle = type ? PHOTO_TYPE_TITLES[type] || type : 'No type yet'
       const slider = onHomeSlider ? 'On the front page slider' : 'Not on the slider'
+      const subtitle = caption ? `${typeTitle}. ${slider}.` : slider
       return {
         title: caption || typeTitle,
-        subtitle: caption ? `${typeTitle}. ${slider}.` : slider,
+        subtitle: standIn ? `Stand-in. ${subtitle}` : subtitle,
         media: media as never,
       }
     },

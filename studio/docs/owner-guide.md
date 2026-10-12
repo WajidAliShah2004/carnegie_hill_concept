@@ -2,7 +2,7 @@
 
 This is everything you need. It works the same on a phone, a tablet, or a computer.
 
-Your link: `https://<name>.sanity.studio/owner`
+Your link: `https://carnegie-hill.sanity.studio/owner`
 
 Save it to your home screen so it is one tap away.
 
@@ -71,5 +71,7 @@ anything after moving photos.
 - **Publish** is grey. Something is missing. Look for the red message on the form.
   It is nearly always the four buttons, so tap one.
 - A photo is not on the website yet. Give it five minutes, then reload the page.
+- You tapped **Add photo** by mistake. Tap the three dots next to **Publish**,
+  then **Delete**. A photo that was never published is not on the website.
 
 If it still will not work, call or message Juko.
