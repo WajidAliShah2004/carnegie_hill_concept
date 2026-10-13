@@ -6,6 +6,11 @@ name: Deploy
 #
 # Ten quick uploads make one build: the concurrency group below cancels a run
 # that is still going when the next publish arrives.
+#
+# Until the original photos are in Sanity a production build cannot pass, so
+# everything is staging unless the repository variable PRODUCTION_READY is
+# `true`. While it is not, a publish gates the `staging` branch's code (the
+# code the Vercel staging hook builds), and a push to master deploys nothing.
 
 on:
   repository_dispatch:
@@ -28,7 +33,7 @@ on:
 # cancels it and starts again with the newer content, which is what the owner
 # expects when he adds four photos in a row.
 concurrency:
-  group: deploy-${{ github.event.inputs.environment || (github.ref == 'refs/heads/master' && 'production' || 'staging') }}
+  group: deploy-${{ github.event.inputs.environment || (vars.PRODUCTION_READY == 'true' && github.ref == 'refs/heads/master' && 'production') || 'staging' }}
   cancel-in-progress: true
 
 defaults:
@@ -42,11 +47,13 @@ permissions:
 jobs:
   deploy:
     name: Gate and deploy
+    # A push to master is a production deploy, so it waits for PRODUCTION_READY.
+    if: ${{ github.event_name != 'push' || vars.PRODUCTION_READY == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     env:
-      DEPLOY_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/master' && 'production' || 'staging') }}
+      DEPLOY_ENV: ${{ github.event.inputs.environment || (vars.PRODUCTION_READY == 'true' && github.ref == 'refs/heads/master' && 'production') || 'staging' }}
       DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET }}
       SITE_URL: ${{ vars.SITE_URL || 'https://www.carnegiehillframing.com' }}
       SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
@@ -66,6 +73,10 @@ jobs:
 
       - name: Check out
         uses: actions/checkout@v4
+        with:
+          # A publish before PRODUCTION_READY gates the code the staging host
+          # builds. Empty means the default: the commit that triggered the run.
+          ref: ${{ github.event_name == 'repository_dispatch' && vars.PRODUCTION_READY != 'true' && (vars.STAGING_BRANCH || 'staging') || '' }}
 
       - name: Use Node 22
         uses: actions/setup-node@v4
@@ -145,6 +156,7 @@ jobs:
           HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
           HOSTINGER_SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
           HOSTINGER_PATH: ${{ secrets.HOSTINGER_PATH }}
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
 
       - name: Load the deploy key
         if: ${{ github.event.inputs.dry_run != 'true' && vars.DEPLOY_TARGET == 'hostinger' }}
@@ -163,6 +175,7 @@ jobs:
           HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
           HOSTINGER_SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
           HOSTINGER_PATH: ${{ secrets.HOSTINGER_PATH }}
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
 
       - name: Keep this build for the next rollback
         if: ${{ success() && github.event.inputs.dry_run != 'true' }}

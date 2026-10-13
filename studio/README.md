@@ -100,9 +100,11 @@ server. The dataset is public, so the build needs no read token.
 
 ## 6. The publish webhook
 
-For now a webhook called "Vercel staging build" rebuilds the staging copy on
-Vercel instead. See "Staging on Vercel, for now" in `docs/deploy.md`. The
-GitHub webhook below is for when a production host exists.
+This webhook is the only path from a publish to the site. Until a production
+host exists the workflow deploys to the staging copy on Vercel, after every
+gate has passed; see "Staging on Vercel, for now" in `docs/deploy.md`. The old
+webhook "Vercel staging build", which called Vercel directly and skipped the
+gates, must stay disabled.
 
 When anyone publishes in the Studio, GitHub Actions should build and deploy the
 site. Sanity does that with a webhook that calls GitHub's `repository_dispatch`.
@@ -112,7 +114,7 @@ In https://www.sanity.io/manage, open API, then Webhooks, then Create webhook.
 | Setting | Value |
 | --- | --- |
 | Name | GitHub build |
-| URL | `https://api.github.com/repos/<github-owner>/<repo>/dispatches` |
+| URL | `https://api.github.com/repos/WajidAliShah2004/carnegie_hill_concept/dispatches` |
 | Dataset | `production` |
 | Trigger on | Create, Update, Delete |
 | Filter | see below |

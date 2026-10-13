@@ -25,36 +25,58 @@ Target: live within three minutes of the tap.
 
 ## Staging on Vercel, for now
 
-Until a production host is set up, publishing goes to a staging copy on
-Vercel instead of through GitHub Actions. Set up and tested on 3 October 2026.
+Until a production host is set up, a publish goes through GitHub Actions to a
+staging copy on Vercel. Changed on 13 October 2026. From 3 October until then,
+Sanity called the Vercel hook directly and no gate ran.
 
 | Piece | Where |
 | --- | --- |
+| Sanity webhook | "GitHub build", calls `repository_dispatch` on this repository (settings in `studio/README.md`) |
+| GitHub workflow | `.github/workflows/deploy.yml`, with `DEPLOY_TARGET` = `vercel` |
 | Vercel project | `carnegie-hill-site`, Root Directory `site/` |
 | Branch | `staging`, cut from `production-build` |
 | Address | https://carnegie-hill-site-git-staging-wajidalishah2004s-projects.vercel.app (Vercel login needed) |
-| Variables | `SANITY_PROJECT_ID` and `SANITY_DATASET`, Preview, branch `staging` only |
-| Vercel deploy hook | "Sanity publish", branch `staging` |
-| Sanity webhook | "Vercel staging build", calls that hook on any published change to the site's document types |
+| Vercel variables | `SANITY_PROJECT_ID` and `SANITY_DATASET`, Preview, branch `staging` only |
+| Vercel deploy hook | "GitHub gate", branch `staging`. Its URL is the GitHub secret `VERCEL_DEPLOY_HOOK_URL` |
+| Old path | Sanity webhook "Vercel staging build" and Vercel hook "Sanity publish". Disabled, because they skip every gate |
 
 What this means in practice:
 
-- A publish in the Studio rebuilds staging from Sanity about a minute later.
-  Tested with a publish and its undo: two deliveries, both answered 201, two
-  builds.
-- Vercel only builds. None of the gates run on this path. CI still runs every
-  gate on every push to GitHub.
+- A publish starts the Deploy workflow. It checks out the `staging` branch,
+  builds it from Sanity, and runs every gate. Only if all of them pass does
+  `scripts/deploy.mjs` call the Vercel hook, and Vercel then builds the same
+  code and content again and publishes it. A failed gate leaves staging as it
+  was.
+- It is slower than the old direct path, because the gates include Playwright
+  and Lighthouse. Measure the first few runs and record the time here.
+- LCP warns on staging and fails only a production build (`lighthouserc.cjs`).
+  It cannot pass until the original photos are on the Sanity CDN.
+- `DEPLOY_TARGET=vercel` refuses a production run. A push to `master` deploys
+  nothing until the repository variable `PRODUCTION_READY` is `true`.
 - The client preview at https://carnegie-hill-site.vercel.app is the same
   project's Production, built from `master` and the seed. It has no Sanity
   variables, so it keeps the seed's photos until real photos are in Sanity.
 - Code changes reach staging only when `staging` moves: fast forward it to
-  `production-build` and push.
-- The deploy hook URL lives only in the Sanity webhook's settings. Anyone with
-  it can start a build, so it is not written down anywhere else. If it leaks,
-  remove the hook with `vercel deploy-hooks remove`, create a new one, and paste
-  the new URL into the Sanity webhook.
+  `production-build` and push. A publish gates whatever `staging` holds, so the
+  workflow file on `master` and the code on `staging` both matter.
+- The deploy hook URL lives only in the GitHub secret. Anyone with it can start
+  a build, so it is not written down anywhere else. If it leaks, remove the
+  hook with `vercel deploy-hooks remove`, create a new one, and update the
+  secret.
 - Production never runs on Vercel: the Hobby plan does not allow commercial
   use.
+
+### Going to production
+
+Once the original photos and the review links are in Sanity and Cloudflare
+Pages or Hostinger is set up:
+
+1. Set `DEPLOY_TARGET` to `cloudflare` or `hostinger` and add that host's
+   secrets.
+2. Set the repository variable `PRODUCTION_READY` to `true`. From then on a
+   publish and a push to `master` both build `master` as production.
+3. Delete the "GitHub gate" hook in Vercel and the `VERCEL_DEPLOY_HOOK_URL`
+   secret.
 
 ## The domain, 7 October 2026
 
@@ -211,9 +233,11 @@ Repository **variables** (not secret, visible in the Actions log):
 
 | Name | What it is |
 | --- | --- |
-| `DEPLOY_TARGET` | `cloudflare` or `hostinger` |
+| `DEPLOY_TARGET` | `cloudflare` or `hostinger`, or `vercel` for the staging stopgap |
+| `PRODUCTION_READY` | Unset until the originals are in Sanity and a production host exists. `true` makes a publish and a push to `master` production builds. |
+| `STAGING_BRANCH` | Optional. The branch a publish gates while not production ready. Defaults to `staging`. |
 | `SITE_URL` | `https://www.carnegiehillframing.com` |
-| `SANITY_PROJECT_ID` | Unset until the Sanity project exists. Unset means build from `site/content/seed/`. |
+| `SANITY_PROJECT_ID` | `vw3f3n6v`. Unset means build from `site/content/seed/`, which also switches CI over. |
 | `SANITY_DATASET` | `production` |
 | `CLOUDFLARE_PROJECT_NAME` | The Pages project name |
 | `NEXT_PUBLIC_WEB3FORMS_KEY` | Public by design, restricted to www.carnegiehillframing.com in the Web3Forms dashboard |
@@ -232,6 +256,7 @@ Repository **secrets**:
 | `HOSTINGER_PATH` | Usually `/home/<user>/domains/nyframing.com/public_html` |
 | `HOSTINGER_SSH_KEY` | Private half of a key added to the Hostinger account |
 | `INDEXNOW_KEY` | 8 to 128 characters, letters, digits and dashes. Generate it in Bing Webmaster Tools. |
+| `VERCEL_DEPLOY_HOOK_URL` | The Vercel "GitHub gate" hook, branch `staging`. Only while `DEPLOY_TARGET` is `vercel`. |
 
 The GitHub token the Sanity webhook uses is not in this list on purpose. It
 lives in the webhook's Authorization header in the Sanity dashboard and nowhere
