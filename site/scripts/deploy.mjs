@@ -4,10 +4,13 @@
  *
  *   DEPLOY_TARGET=cloudflare node scripts/deploy.mjs [--dry-run]
  *   DEPLOY_TARGET=hostinger  node scripts/deploy.mjs [--dry-run]
+ *   DEPLOY_TARGET=vercel     node scripts/deploy.mjs [--dry-run]
  *
- * It never runs on Vercel. Vercel Hobby does not permit commercial use and the
- * budget is zero, so production is Cloudflare Pages or the client's existing
- * Hostinger shared hosting.
+ * Production never runs on Vercel. Vercel Hobby does not permit commercial use
+ * and the budget is zero, so production is Cloudflare Pages or the client's
+ * existing Hostinger shared hosting. `vercel` is the staging stopgap: it
+ * uploads nothing, it only calls the staging deploy hook once every gate has
+ * passed, and it refuses to run for production.
  *
  * Before uploading anything it writes the host rules into `out/`:
  *   - Cloudflare: appends the generated RSC payload rewrites to `_redirects`.
@@ -222,9 +225,29 @@ function deployHostinger() {
   say('  Rollback: re-run the rollback workflow, which rsyncs the previous out/ artifact.')
 }
 
+/**
+ * Vercel builds the `staging` branch from Sanity by itself when its deploy
+ * hook is called. Calling it here, after the gates, is what stops a publish
+ * reaching staging without them. Vercel's build is a second build of the same
+ * code and content, not an upload of this one.
+ */
+async function deployVercel() {
+  if (environment === 'production') {
+    throw new Error('DEPLOY_TARGET=vercel is staging only. Vercel Hobby does not permit commercial use.')
+  }
+  requireEnv('VERCEL_DEPLOY_HOOK_URL')
+  if (dryRun) {
+    say('  would POST the Vercel staging deploy hook')
+    return
+  }
+  const response = await fetch(process.env.VERCEL_DEPLOY_HOOK_URL, { method: 'POST' })
+  if (!response.ok) throw new Error(`the Vercel deploy hook answered ${response.status}`)
+  say('  Vercel: staging rebuild started. Every gate passed on this content first.')
+}
+
 /* ------------------------------------------------------------------ */
 
-function main() {
+async function main() {
   if (!existsSync(OUT_DIR)) throw new Error('out/ does not exist. Run npm run build first.')
 
   say(`deploy: target=${target || '(unset)'} env=${environment} site=${siteUrl}${dryRun ? ' [dry run]' : ''}`)
@@ -233,9 +256,11 @@ function main() {
     deployCloudflare()
   } else if (target === 'hostinger') {
     deployHostinger()
+  } else if (target === 'vercel') {
+    await deployVercel()
   } else {
     throw new Error(
-      `DEPLOY_TARGET must be "cloudflare" or "hostinger". Got ${JSON.stringify(process.env.DEPLOY_TARGET ?? null)}. ` +
+      `DEPLOY_TARGET must be "cloudflare", "hostinger" or "vercel". Got ${JSON.stringify(process.env.DEPLOY_TARGET ?? null)}. ` +
         'Production never runs on Vercel: Hobby does not permit commercial use.',
     )
   }
@@ -248,7 +273,7 @@ function main() {
 const invokedDirectly = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
 if (invokedDirectly) {
   try {
-    main()
+    await main()
   } catch (error) {
     console.error(`deploy: ${error.message}`)
     process.exitCode = 1
