@@ -64,12 +64,20 @@ jobs:
       GH_TOKEN: ${{ github.token }}
 
     steps:
+      # Runs before the checkout, so it cannot use the default working
+      # directory: site/ does not exist yet. The payload comes from outside
+      # the repository, so it reaches the shell as variables, never as script.
       - name: Say what triggered this
+        working-directory: .
+        env:
+          TRIGGER: ${{ github.event_name }}
+          DOCUMENT_TYPE: ${{ github.event.client_payload.documentType }}
+          DOCUMENT_ID: ${{ github.event.client_payload.documentId }}
         run: |
-          echo "trigger: ${{ github.event_name }}"
+          echo "trigger: $TRIGGER"
           echo "environment: $DEPLOY_ENV"
           echo "target: ${DEPLOY_TARGET:-unset}"
-          echo "document: ${{ github.event.client_payload.documentType }} ${{ github.event.client_payload.documentId }}"
+          echo "document: ${DOCUMENT_TYPE:-none} ${DOCUMENT_ID:-}"
 
       - name: Check out
         uses: actions/checkout@v4
